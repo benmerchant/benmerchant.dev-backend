@@ -4,7 +4,7 @@
   "description": "Node.js Express RESTful API",
   "main": "server.js",
   "scripts": {
-    "test": "mocha --timeout 9999"
+    "test": "mocha --timeout 9999 --exit"
   },
   "repository": {
     "type": "git",
