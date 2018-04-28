@@ -27,9 +27,9 @@ if(process.env.NODE_ENV === "test"){
     if(err) console.error(err);
     console.log('Server listening on port ' + config.test_port);
     // this is showing up where I dont't want it in my tests
-    mongoose.connection.on('connected', function(){
-      console.log('Mongoose connected to ' + config.test_db);
-    });
+    // mongoose.connection.on('connected', function(){
+    //   console.log('Mongoose connected to ' + config.test_db);
+    // });
   });
 } else {
   db = mongoose.connect(config.db);
