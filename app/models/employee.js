@@ -3,8 +3,6 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const ObjectId = Schema.Types.ObjectId;
 
-///////////////////////////
-// commented out some required fields to test testing
 
 // Employee Schema
 const EmployeeSchema = mongoose.Schema({
@@ -60,6 +58,7 @@ const EmployeeSchema = mongoose.Schema({
     name: String,
     salaried: Boolean,
     rate_of_pay: Number,
+    manager_privileges: Boolean,
     default: Boolean // this will help in-app with drop down boxes
   }],
   availability: {
