@@ -18,12 +18,19 @@ module.exports = function(app){
   employeeRoutes.get('/', EmployeeController.getEmployees);
   // create new employee
   employeeRoutes.post('/', EmployeeController.createEmployee);
+  // get employee by _id
+  employeeRoutes.get('/:id', EmployeeController.getOneEmployee);
+  // update an employee
+  employeeRoutes.put('/:id', EmployeeController.updateEmployee);
+  // delete an employee
+  employeeRoutes.delete('/:id', EmployeeController.deleteEmployee);
 
   /// Role Routes /////////////////////
   // get all roles
   roleRoutes.get('/', RoleController.getRoles);
   // create new role
   roleRoutes.post('/', RoleController.createRole);
+
 
   // url for all API routes
   app.use('/api', apiRoutes);

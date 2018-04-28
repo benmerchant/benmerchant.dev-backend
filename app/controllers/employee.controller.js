@@ -62,3 +62,32 @@ exports.createEmployee = [
     });
   }
 ];
+
+// GET one employee by _id
+exports.getOneEmployee = (req, res, next) => {
+  Employee.findById(req.params.id, (err, employee) => {
+    if(err) res.status(500).json({error: err});
+    else return res.status(200).json({msg: 'Successfully found employee', employee: employee});
+  });
+};
+
+// PUT update one employee by _id
+exports.updateEmployee = (req, res, next) => {
+  Employee.findByIdAndUpdate(
+    req.params.id,
+    req.body,
+    {new: true},
+    (err, employee) => {
+      if(err) res.status(422).json({error: err});
+      else return res.status(200).json({msg: 'Successfully updated employee', employee: employee});
+    }
+  );
+};
+
+// DELETE remove an employee by _id
+exports.deleteEmployee = (req, res, next) => {
+  Employee.remove({_id: req.params.id}, (err, result) => {
+    if(err) res.status(422).json({error: err});
+    else return res.status(200).json({result, msg: 'Successfully deleted employee'});
+  });
+};

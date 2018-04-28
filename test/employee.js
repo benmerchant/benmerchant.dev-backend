@@ -11,7 +11,7 @@ const sinon = require('sinon');
 const sinonMongoose = require('sinon-mongoose');
 
 const server = require('../server');
-const should = chai.should();
+const expect = require('chai').expect;
 
 
 chai.use(chaiHttp);
@@ -31,11 +31,11 @@ describe('Employees',() => {
       chai.request(server)
           .get('/api/employees')
           .end((err, res) => {
-            res.should.have.status(200);
-            res.body.should.be.an('object');
-            res.body.should.have.property('employees');
-            res.body.employees.should.be.a('array');
-            res.body.employees.length.should.be.eql(0);
+            expect(res).to.have.status(200);
+            expect(res.body).to.be.an('object');
+            expect(res.body).to.have.property('employees');
+            expect(res.body.employees).to.be.a('array');
+            expect(res.body.employees.length).to.be.eql(0);
           done();
         });
     });
@@ -58,12 +58,12 @@ describe('Employees',() => {
           .post('/api/employees')
           .send(employee)
           .end((err, res) => {
-            res.should.have.status(500);
-            res.body.should.be.an('object');
-            res.body.should.have.property('error');
-            res.body.error.should.have.property('errors');
-            res.body.error.errors.should.have.property('login_number');
-            res.body.error.errors.login_number.should.have.property('kind').eql('required');
+            expect(res).to.have.status(500);
+            expect(res.body).to.be.an('object');
+            expect(res.body).to.have.property('error');
+            expect(res.body.error).to.have.property('errors');
+            expect(res.body.error.errors).to.have.property('login_number');
+            expect(res.body.error.errors.login_number).to.have.property('kind').eql('required');
           done();
         });
     });
@@ -84,12 +84,12 @@ describe('Employees',() => {
           .post('/api/employees')
           .send(employee)
           .end((err, res) => {
-            res.should.have.status(500);
-            res.body.should.be.an('object');
-            res.body.should.have.property('error');
-            res.body.error.should.have.property('errors');
-            res.body.error.errors.should.have.property('login_number');
-            res.body.error.errors.login_number.should.have.property('kind').eql('Number');
+            expect(res).to.have.status(500);
+            expect(res.body).to.be.an('object');
+            expect(res.body).to.have.property('error');
+            expect(res.body.error).to.have.property('errors');
+            expect(res.body.error.errors).to.have.property('login_number');
+            expect(res.body.error.errors.login_number).to.have.property('kind').eql('Number');
           done();
         });
     });
@@ -109,12 +109,12 @@ describe('Employees',() => {
           .post('/api/employees')
           .send(employee)
           .end((err, res) => {
-            res.should.have.status(500);
-            res.body.should.be.an('object');
-            res.body.should.have.property('error');
-            res.body.error.should.have.property('errors');
-            res.body.error.errors.should.have.property('first_name');
-            res.body.error.errors.first_name.should.have.property('kind').eql('required');
+            expect(res).to.have.status(500);
+            expect(res.body).to.be.an('object');
+            expect(res.body).to.have.property('error');
+            expect(res.body.error).to.have.property('errors');
+            expect(res.body.error.errors).to.have.property('first_name');
+            expect(res.body.error.errors.first_name).to.have.property('kind').eql('required');
           done();
         });
     });
@@ -134,12 +134,12 @@ describe('Employees',() => {
           .post('/api/employees')
           .send(employee)
           .end((err, res) => {
-            res.should.have.status(500);
-            res.body.should.be.an('object');
-            res.body.should.have.property('error');
-            res.body.error.should.have.property('errors');
-            res.body.error.errors.should.have.property('email');
-            res.body.error.errors.email.should.have.property('kind').eql('required');
+            expect(res).to.have.status(500);
+            expect(res.body).to.be.an('object');
+            expect(res.body).to.have.property('error');
+            expect(res.body.error).to.have.property('errors');
+            expect(res.body.error.errors).to.have.property('email');
+            expect(res.body.error.errors.email).to.have.property('kind').eql('required');
           done();
         });
     });
@@ -159,11 +159,11 @@ describe('Employees',() => {
           .post('/api/employees')
           .send(employee)
           .end((err, res) => {
-            res.should.have.status(422);
-            res.body.should.be.an('object');
-            res.body.should.have.property('errors');
-            res.body.errors.should.have.property('last_name');
-            res.body.errors.last_name.should.have.property('msg').eql('Must enter a last name');
+            expect(res).to.have.status(422);
+            expect(res.body).to.be.an('object');
+            expect(res.body).to.have.property('errors');
+            expect(res.body.errors).to.have.property('last_name');
+            expect(res.body.errors.last_name).to.have.property('msg').eql('Must enter a last name');
           done();
         });
     });
@@ -185,11 +185,11 @@ describe('Employees',() => {
           .post('/api/employees')
           .send(employee)
           .end((err, res) => {
-            res.should.have.status(422);
-            res.body.should.be.an('object');
-            res.body.should.have.property('errors');
-            res.body.errors.should.have.property('password');
-            res.body.errors.password.should.have.property('msg').eql('Password must be at least 8 characters');
+            expect(res).to.have.status(422);
+            expect(res.body).to.be.an('object');
+            expect(res.body).to.have.property('errors');
+            expect(res.body.errors).to.have.property('password');
+            expect(res.body.errors.password).to.have.property('msg').eql('Password must be at least 8 characters');
           done();
         });
     });
@@ -210,11 +210,11 @@ describe('Employees',() => {
           .post('/api/employees')
           .send(employee)
           .end((err, res) => {
-            res.should.have.status(422);
-            res.body.should.be.an('object');
-            res.body.should.have.property('errors');
-            res.body.errors.should.have.property('password');
-            res.body.errors.password.should.have.property('msg').eql('Password must be no more than characters');
+            expect(res).to.have.status(422);
+            expect(res.body).to.be.an('object');
+            expect(res.body).to.have.property('errors');
+            expect(res.body.errors).to.have.property('password');
+            expect(res.body.errors.password).to.have.property('msg').eql('Password must be no more than characters');
           done();
         });
     });
@@ -234,12 +234,12 @@ describe('Employees',() => {
           .post('/api/employees')
           .send(employee)
           .end((err, res) => {
-            res.should.have.status(500);
-            res.body.should.be.an('object');
-            res.body.should.have.property('error');
-            res.body.error.should.have.property('errors');
-            res.body.error.errors.should.have.property('ssn');
-            res.body.error.errors.ssn.should.have.property('kind').eql('required');
+            expect(res).to.have.status(500);
+            expect(res.body).to.be.an('object');
+            expect(res.body).to.have.property('error');
+            expect(res.body.error).to.have.property('errors');
+            expect(res.body.error.errors).to.have.property('ssn');
+            expect(res.body.error.errors.ssn).to.have.property('kind').eql('required');
           done();
         });
     });
@@ -259,12 +259,12 @@ describe('Employees',() => {
           .post('/api/employees')
           .send(employee)
           .end((err, res) => {
-            res.should.have.status(500);
-            res.body.should.be.an('object');
-            res.body.should.have.property('error');
-            res.body.error.should.have.property('errors');
-            res.body.error.errors.should.have.property('gender');
-            res.body.error.errors.gender.should.have.property('kind').eql('required');
+            expect(res).to.have.status(500);
+            expect(res.body).to.be.an('object');
+            expect(res.body).to.have.property('error');
+            expect(res.body.error).to.have.property('errors');
+            expect(res.body.error.errors).to.have.property('gender');
+            expect(res.body.error.errors.gender).to.have.property('kind').eql('required');
           done();
         });
     });
@@ -285,29 +285,119 @@ describe('Employees',() => {
           .post('/api/employees')
           .send(employee)
           .end((err, res) => {
-            res.should.have.status(200);
-            res.body.should.be.an('object');
-            res.body.should.have.property('msg').eql('Employee successfully added');
-            res.body.should.have.property('employee');
-            res.body.employee.should.have.property('first_name');
-            res.body.employee.should.have.property('middle_name');
-            res.body.employee.should.have.property('last_name');
-            res.body.employee.should.have.property('login_number');
-            res.body.employee.should.have.property('pin_num');
-            res.body.employee.should.have.property('ssn');
-            res.body.employee.should.have.property('gender');
-            res.body.employee.should.have.property('email');
-            res.body.employee.should.have.property('password');
+            expect(res).to.have.status(200);
+            expect(res.body).to.be.an('object');
+            expect(res.body).to.have.property('msg').eql('Employee successfully added');
+            expect(res.body).to.have.property('employee');
+            expect(res.body.employee).to.have.property('first_name');
+            expect(res.body.employee).to.have.property('middle_name');
+            expect(res.body.employee).to.have.property('last_name');
+            expect(res.body.employee).to.have.property('login_number');
+            expect(res.body.employee).to.have.property('pin_num');
+            expect(res.body.employee).to.have.property('ssn');
+            expect(res.body.employee).to.have.property('gender');
+            expect(res.body.employee).to.have.property('email');
+            expect(res.body.employee).to.have.property('password');
             // test that password is hashing into something different
-            res.body.employee.password.should.not.be.eql(employee.password);
+            expect(res.body.employee.password).to.not.be.eql(employee.password);
             // fields generated by the API
-            res.body.employee.should.have.property('display_name');
-            res.body.employee.should.have.property('hire_date');
+            expect(res.body.employee).to.have.property('display_name');
+            expect(res.body.employee).to.have.property('hire_date');
             // trying to just test if hire_date is of type Date
             // so I'm testing if the current date is w/in 1 minute of employee being saved to db
-            res.body.employee.hire_date.should.be.sameMoment(new Date(), 'minute', 'test failed if hire_date equal to today');
+            expect(res.body.employee.hire_date).to.be.sameMoment(new Date(), 'minute', 'test failed if hire_date equal to today');
           done();
         });
+    });
+  });
+  describe('/GET/:id - retrieve employee', () => {
+    it('it should GET one employee by specified _id', (done) => {
+      const employee = new Employee({
+        first_name: 'Jon',
+        middle_name: 'Aegon',
+        last_name: 'Snow',
+        login_number: 123456,
+        pin_num: 1234,
+        ssn: 333224444,
+        gender: 'Male',
+        email: 'whitewolf@winterfell.gov',
+        password: 'w1nt3rI$coming'
+        // we aren't hashing the password, but express validates that anyways not mongoose
+      });
+      // we know last_name is include, reproduce server side creation of  display_name
+      employee.display_name = `${employee.first_name} ${employee.last_name.substring(0,1)}`;
+      employee.save((err, employee) => {
+        chai.request(server)
+            .get(`/api/employees/${employee.id}`)
+            .end((err, res) => {
+                expect(res).to.have.status(200);
+                expect(res.body).to.be.an('object');
+                expect(res.body).to.have.property('employee');
+                expect(res.body.employee).to.have.property('_id').eql(employee.id);
+                expect(res.body).to.have.property('msg').eql('Successfully found employee');
+              done();
+            });
+      });
+    });
+  });
+  describe('/PUT/:id - update employee', () => {
+    it('it should UPDATE an employee\'s first_name specified by id', (done) => {
+      const employee = new Employee({
+        first_name: 'Jon',
+        middle_name: 'Aegon',
+        last_name: 'Snow',
+        login_number: 123456,
+        pin_num: 1234,
+        ssn: 333224444,
+        gender: 'Male',
+        email: 'whitewolf@winterfell.gov',
+        password: 'w1nt3rI$coming'
+        // we aren't hashing the password, but express validates that anyways not mongoose
+      });
+      // we know last_name is include, reproduce server side creation of  display_name
+      employee.display_name = `${employee.first_name} ${employee.last_name.substring(0,1)}`;
+      employee.save((err, employee) => {
+        chai.request(server)
+            .put(`/api/employees/${employee.id}`)
+            .send({first_name: 'KingInTheNorth'})
+            .end((err, res) => {
+                expect(res).to.have.status(200);
+                expect(res.body).to.have.property('employee');
+                expect(res.body).to.have.property('msg').eql('Successfully updated employee');
+                expect(res.body.employee).to.have.property('first_name').eql('KingInTheNorth');
+              done();
+            });
+      });
+    });
+  });
+  describe('/DELETE/:id - remove employee', () => {
+    it('it should DELETE an specified by id', (done) => {
+      const employee = new Employee({
+        first_name: 'Jon',
+        middle_name: 'Aegon',
+        last_name: 'Snow',
+        login_number: 123456,
+        pin_num: 1234,
+        ssn: 333224444,
+        gender: 'Male',
+        email: 'whitewolf@winterfell.gov',
+        password: 'w1nt3rI$coming'
+        // we aren't hashing the password, but express validates that anyways not mongoose
+      });
+      // we know last_name is include, reproduce server side creation of  display_name
+      employee.display_name = `${employee.first_name} ${employee.last_name.substring(0,1)}`;
+      employee.save((err, employee) => {
+        chai.request(server)
+            .delete(`/api/employees/${employee.id}`)
+            .end((err, res) => {
+                expect(res).to.have.status(200);
+                expect(res.body).to.have.property('msg').eql('Successfully deleted employee');
+                expect(res.body).to.have.property('result');
+                expect(res.body.result).to.have.property('ok').eql(1);
+                expect(res.body.result).to.have.property('n').eql(1);
+              done();
+            });
+      });
     });
   });
 });
