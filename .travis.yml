@@ -4,7 +4,9 @@ node_js:
 cache:
   directories:
     - "node_modules"
-before_script: chmod 0777 ./node_modules/.bin/mocha
+before_script:
+  - chmod 0777 ./node_modules/.bin/mocha
+  - chmod 0777 ./node_modules/.bin/nyc
 services: mongodb
 
 after_success: npm run coverage
