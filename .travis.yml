@@ -6,3 +6,5 @@ cache:
     - "node_modules"
 before_script: chmod 0777 ./node_modules/.bin/mocha
 services: mongodb
+
+after_success: npm run coverage
