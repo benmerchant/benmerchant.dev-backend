@@ -163,7 +163,7 @@ describe('Roles', () => {
         });
     });
   });
-  describe('/POST/:id - retrieve one role', () => {
+  describe('/GET/:id - retrieve one role', () => {
     it('it should GET one role by _id', (done) => {
       const role = new Role({
         name: 'Server',

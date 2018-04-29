@@ -1,16 +1,19 @@
 const express = require('express');
 const EmployeeController = require('./controllers/employee.controller');
 const RoleController = require('./controllers/role.controller');
+const RestaurantController = require('./controllers/restaurant.controller');
 
 module.exports = function(app){
   // route groups
   const apiRoutes = express.Router();
   const employeeRoutes = express.Router();
   const roleRoutes = express.Router();
+  const restaurantRoutes = express.Router();
 
   // employee routes middleware for apiRoutes
   apiRoutes.use('/employees', employeeRoutes);
   apiRoutes.use('/roles', roleRoutes);
+  apiRoutes.use('/restaurant', restaurantRoutes);
 
 
   /// Employee Routes /////////////////////
@@ -37,6 +40,13 @@ module.exports = function(app){
   // delete one role by _id
   roleRoutes.delete('/:id', RoleController.deleteRole);
 
+  /// Restaurant Routes /////////////////////
+  // GET restaurant document
+  restaurantRoutes.get('/', RestaurantController.getRestaurant);
+  // create new restaurant
+  restaurantRoutes.post('/', RestaurantController.createRestaurant);
+  // update restaurant hours
+  restaurantRoutes.put('/:id', RestaurantController.updateRestaurant);
 
   // url for all API routes
   app.use('/api', apiRoutes);
