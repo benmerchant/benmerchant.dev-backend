@@ -1,5 +1,5 @@
 # StartPOS
-[![Build Status](https://travis-ci.org/benmerchant/StartPOS-backend.svg?branch=master)](https://travis-ci.org/benmerchant/StartPOS-backend) [![Coverage Status](https://coveralls.io/repos/github/benmerchant/StartPOS-backend/badge.svg?branch=master)](https://coveralls.io/github/benmerchant/StartPOS-backend?branch=master) [![Dependency Status](https://beta.gemnasium.com/badges/github.com/benmerchant/StartPOS-backend.svg)](https://beta.gemnasium.com/projects/github.com/benmerchant/StartPOS-backend)
+[![Build Status](https://travis-ci.org/benmerchant/StartPOS-backend.svg?branch=master)](https://travis-ci.org/benmerchant/StartPOS-backend) [![Coverage Status](https://coveralls.io/repos/github/benmerchant/StartPOS-backend/badge.svg?branch=master)](https://coveralls.io/github/benmerchant/StartPOS-backend?branch=master) [![Dependency Status](https://beta.gemnasium.com/badges/github.com/benmerchant/StartPOS-backend.svg)](https://beta.gemnasium.com/projects/github.com/benmerchant/StartPOS-backend) [![Known Vulnerabilities](https://snyk.io/test/github/benmerchant/startpos-backend/badge.svg?targetFile=package.json)](https://snyk.io/test/github/benmerchant/startpos-backend?targetFile=package.json)
 
 This is my capstone project for college. 
 
