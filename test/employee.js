@@ -3,6 +3,7 @@ process.env.NODE_ENV = 'test';
 
 const mongoose = require('mongoose');
 const Employee = require('../app/models/employee');
+const Role = require('../app/models/role');
 
 const chai = require('chai');
 chai.use(require('chai-moment'));
@@ -367,6 +368,96 @@ describe('Employees',() => {
                 expect(res.body.employee).to.have.property('first_name').eql('KingInTheNorth');
               done();
             });
+      });
+    });
+    it('it should UPDATE employee - assign role', (done) => {
+      const newEmployee = new Employee({
+        first_name: 'Jon',
+        middle_name: 'Aegon',
+        last_name: 'Snow',
+        login_number: 123456,
+        pin_num: 1234,
+        ssn: 333224444,
+        gender: 'Male',
+        email: 'whitewolf@winterfell.gov',
+        password: 'w1nt3rI$coming'
+      });
+      newEmployee.display_name = `${newEmployee.first_name} ${newEmployee.last_name.substring(0,1)}`;
+      // remove all roles in test db
+      Role.remove({},(err) => {
+        if(err) console.error(err);
+      });
+      const newRole = new Role({
+        name: 'Server',
+        salaried: false,
+        granular_pay: 2.50,
+        manager_privileges: false
+      });
+      // create an employee in the db
+      newEmployee.save((err, employee) => {
+        // create a role in the db
+        newRole.save((err, role) => {
+          chai.request(server)
+              .put(`/api/employees/${employee.id}/assignrole/${role.id}`)
+              .end((err, res) => {
+                expect(res).to.have.status(200);
+                expect(res.body).to.have.property('msg').eql('Successfully assingned new role');
+                expect(res.body).to.have.property('employee');
+                expect(res.body.employee).to.have.property('roles');
+                expect(res.body.employee.roles).to.be.an('array');
+                expect(res.body.employee.roles.length).to.be.eql(1);
+                expect(res.body.employee.roles[0]).to.have.property('_id').eql(role.id);
+              done();
+            });
+        });
+      });
+    });
+    it('it should UPDATE employee - assign role with options other than default', (done) => {
+      const newEmployee = new Employee({
+        first_name: 'Jon',
+        middle_name: 'Aegon',
+        last_name: 'Snow',
+        login_number: 123456,
+        pin_num: 1234,
+        ssn: 333224444,
+        gender: 'Male',
+        email: 'whitewolf@winterfell.gov',
+        password: 'w1nt3rI$coming'
+      });
+      newEmployee.display_name = `${newEmployee.first_name} ${newEmployee.last_name.substring(0,1)}`;
+      // remove all roles in test db
+      Role.remove({},(err) => {
+        if(err) console.error(err);
+      });
+      const newRole = new Role({
+        name: 'Server',
+        salaried: false,
+        granular_pay: 2.50,
+        manager_privileges: false
+      });
+      // create an employee in the db
+      newEmployee.save((err, employee) => {
+        // create a role in the db
+        newRole.save((err, role) => {
+          chai.request(server)
+              .put(`/api/employees/${employee.id}/assignrole/${role.id}`)
+              .send({
+                manager_privileges: true,
+                granular_pay: 3.00
+              })
+              .end((err, res) => {
+                expect(res).to.have.status(200);
+                expect(res.body).to.have.property('msg').eql('Successfully assingned new role');
+                expect(res.body).to.have.property('employee');
+                expect(res.body.employee).to.have.property('roles');
+                expect(res.body.employee.roles).to.be.an('array');
+                expect(res.body.employee.roles.length).to.be.eql(1);
+                expect(res.body.employee.roles[0]).to.have.property('_id').eql(role.id);
+                expect(res.body.employee.roles[0]).to.have.property('manager_privileges').eql(true);
+                expect(res.body.employee.roles[0]).to.have.property('rate_of_pay').eql(3.00);
+              done();
+            });
+        });
       });
     });
   });

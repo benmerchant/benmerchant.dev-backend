@@ -59,7 +59,7 @@ const EmployeeSchema = mongoose.Schema({
     salaried: Boolean,
     rate_of_pay: Number,
     manager_privileges: Boolean,
-    default: Boolean // this will help in-app with drop down boxes
+    default_role: Boolean // this will help in-app with drop down boxes
   }],
   availability: {
     monday: { start_time: String, end_time: String, available: { type:Boolean, default:false} },

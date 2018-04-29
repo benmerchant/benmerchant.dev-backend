@@ -3,10 +3,11 @@ process.env.NODE_ENV = 'test';
 
 const mongoose = require('mongoose');
 const Role = require('../app/models/role');
+const Employee = require('../app/models/employee');
 
 const chai = require('chai');
 // switching to 'expect' as it seems less clumsy
-const expect = require('chai').expect;
+const expect = chai.expect;
 const chaiHttp = require('chai-http');
 
 const server = require('../server');
@@ -146,7 +147,6 @@ describe('Roles', () => {
         granular_pay: 2.50,
         manager_privileges: false
       };
-      //console.log(role.name instanceof String);
       chai.request(server)
           .post('/api/roles')
           .send(role)
@@ -161,6 +161,98 @@ describe('Roles', () => {
             expect(res.body.role).to.have.property('manager_privileges');
           done();
         });
+    });
+  });
+  describe('/POST/:id - retrieve one role', () => {
+    it('it should GET one role by _id', (done) => {
+      const role = new Role({
+        name: 'Server',
+        salaried: false,
+        granular_pay: 2.50,
+        manager_privileges: false
+      });
+      role.save((err, role) => {
+        chai.request(server)
+            .get(`/api/roles/${role.id}`)
+            .end((err, res) => {
+              expect(res).to.have.status(200);
+              expect(res.body).to.have.property('msg').eql('Successfully located role');
+              expect(res.body).to.have.property('role');
+              expect(res.body.role).to.have.property('_id').eql(role.id);
+            done();
+          });
+      });
+    });
+  });
+  describe('/DELETE/:id - delete one role', () => {
+    it('it should DELETE one role by _id', (done) => {
+      const role = new Role({
+        name: 'Server',
+        salaried: false,
+        granular_pay: 2.50,
+        manager_privileges: false
+      });
+      role.save((err, result) => {
+        chai.request(server)
+            .delete(`/api/roles/${role.id}`)
+            .end((err, res) => {
+              expect(res).to.have.status(200);
+              expect(res.body).to.have.property('msg').eql('Successfully deleted role');
+              expect(res.body).to.have.property('result');
+              expect(res.body.result).to.have.property('ok').eql(1);
+              expect(res.body.result).to.have.property('n').eql(1);
+            done();
+          });
+      });
+    });
+    // this is testing two things technically, but previous tests let us know
+    // that assigning roles works. I can't think of another way to do this.
+    // the employee and the role both need to exist in the DB for a true test
+    it('it should not DELETE a role that is assigned to an employee', (done) => {
+      Employee.remove({},(err) => { // remove any employees in db
+        if(err) console.error(err);
+      });
+      const newEmployee = new Employee({
+        first_name: 'Jon',
+        middle_name: 'Aegon',
+        last_name: 'Snow',
+        login_number: 123456,
+        pin_num: 1234,
+        ssn: 333224444,
+        gender: 'Male',
+        email: 'whitewolf@winterfell.gov',
+        password: 'w1nt3rI$coming'
+      });
+      newEmployee.display_name = `${newEmployee.first_name} ${newEmployee.last_name.substring(0,1)}`;
+
+      const newRole = new Role({
+        name: 'Server',
+        salaried: false,
+        granular_pay: 2.50,
+        manager_privileges: false
+      });
+      newEmployee.save((err, employee) => {
+        newRole.save((err,role) => {
+          // need to assign the role to the employee first
+          chai.request(server)
+              .put(`/api/employees/${employee.id}/assignrole/${role.id}`)
+              .end((err, res) => {
+                if(err) console.error(err);
+                // we already tested this above, but might as well here too
+                expect(res).to.have.status(200);
+                // call the delete role route
+                chai.request(server)
+                    .delete(`/api/roles/${role.id}`)
+                    .end((err, res) => {
+                      expect(res).to.have.status(409);
+                      expect(res.body).to.have.property('msg').eql('Cannot delete role, assigned to employees');
+                      expect(res.body).to.have.property('employees').which.is.an('array');
+                      expect(res.body.employees.length).to.be.gt(0);
+                      done();
+                    });
+              });
+        });
+      });
     });
   });
 });

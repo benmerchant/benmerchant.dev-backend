@@ -24,12 +24,18 @@ module.exports = function(app){
   employeeRoutes.put('/:id', EmployeeController.updateEmployee);
   // delete an employee
   employeeRoutes.delete('/:id', EmployeeController.deleteEmployee);
+  // update employee - assign role by id
+  employeeRoutes.put('/:id/assignrole/:role_id', EmployeeController.assignRole);
 
   /// Role Routes /////////////////////
   // get all roles
   roleRoutes.get('/', RoleController.getRoles);
   // create new role
   roleRoutes.post('/', RoleController.createRole);
+  // get one role by _id
+  roleRoutes.get('/:id', RoleController.getOneRole);
+  // delete one role by _id
+  roleRoutes.delete('/:id', RoleController.deleteRole);
 
 
   // url for all API routes
