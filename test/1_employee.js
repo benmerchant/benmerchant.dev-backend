@@ -491,4 +491,129 @@ describe('Employees',() => {
       });
     });
   });
+  describe('LOGIN / LOGOUT', () => {
+    it('it should login employee', (done) => {
+      const newEmployee = new Employee({
+        first_name: 'Jon',
+        middle_name: 'Aegon',
+        last_name: 'Snow',
+        login_number: 123456,
+        pin_num: 1234,
+        ssn: 333224444,
+        gender: 'Male',
+        email: 'whitewolf@winterfell.gov',
+        password: 'w1nt3rI$coming'
+      });
+      newEmployee.display_name = `${newEmployee.first_name} ${newEmployee.last_name.substring(0,1)}`;
+      // have to test two http requests. because we need to hash that password
+      chai.request(server)
+          .post('/api/employees')
+          .send(newEmployee)
+          .end((err, res) => {
+            expect(res).to.have.status(200);
+            chai.request(server)
+                .post('/api/login')
+                .send({email: newEmployee.email, password: newEmployee.password})
+                .end((err, res) => {
+                  expect(res).to.have.status(200);
+                  expect(res.body).to.have.property('msg').eql('Employee successfully logged in');
+                  expect(res.body).to.have.property('employee').which.is.an('object');
+                  expect(res.body.employee).to.have.property('first_name').eql(newEmployee.first_name);
+                  expect(res.body.employee).to.have.property('email').eql(newEmployee.email);
+                });
+          done();
+          });
+    });
+    it('it should not login employee if email not in database',(done) => {
+      const newEmployee = new Employee({
+        first_name: 'Jon',
+        middle_name: 'Aegon',
+        last_name: 'Snow',
+        login_number: 123456,
+        pin_num: 1234,
+        ssn: 333224444,
+        gender: 'Male',
+        email: 'whitewolf@winterfell.gov',
+        password: 'w1nt3rI$coming'
+      });
+      newEmployee.display_name = `${newEmployee.first_name} ${newEmployee.last_name.substring(0,1)}`;
+      chai.request(server)
+          .post('/api/employees')
+          .send(newEmployee)
+          .end((err, res) => {
+            expect(res).to.have.status(200);
+            chai.request(server)
+                .post('/api/login')
+                .send({email: 'bad@email.pizza', password: newEmployee.password})
+                .end((err, res) => {
+                  expect(res).to.have.status(401);
+                  expect(res.body).to.have.property('msg').eql('Employee login failed');
+                  expect(res.body).to.have.property('reason').eql('email not in DB.');
+                });
+          done();
+          });
+    });
+    it('it should not login employee if password incorrect',(done) => {
+      const newEmployee = new Employee({
+        first_name: 'Jon',
+        middle_name: 'Aegon',
+        last_name: 'Snow',
+        login_number: 123456,
+        pin_num: 1234,
+        ssn: 333224444,
+        gender: 'Male',
+        email: 'whitewolf@winterfell.gov',
+        password: 'w1nt3rI$coming'
+      });
+      newEmployee.display_name = `${newEmployee.first_name} ${newEmployee.last_name.substring(0,1)}`;
+      chai.request(server)
+          .post('/api/employees')
+          .send(newEmployee)
+          .end((err, res) => {
+            expect(res).to.have.status(200);
+            chai.request(server)
+                .post('/api/login')
+                .send({email: newEmployee.email, password: 'badPassword123'})
+                .end((err, res) => {
+                  expect(res).to.have.status(401);
+                  expect(res.body).to.have.property('msg').eql('Employee login failed');
+                  expect(res.body).to.have.property('reason').eql('Incorrect password');
+                });
+          done();
+          });
+    });
+    it('it should logout a logged in employee',(done) => {
+      const newEmployee = new Employee({
+        first_name: 'Jon',
+        middle_name: 'Aegon',
+        last_name: 'Snow',
+        login_number: 123456,
+        pin_num: 1234,
+        ssn: 333224444,
+        gender: 'Male',
+        email: 'whitewolf@winterfell.gov',
+        password: 'w1nt3rI$coming'
+      });
+      newEmployee.display_name = `${newEmployee.first_name} ${newEmployee.last_name.substring(0,1)}`;
+      chai.request(server)
+          .post('/api/employees')
+          .send(newEmployee)
+          .end((err, res) => {
+            expect(res).to.have.status(200);
+            chai.request(server)
+                .post('/api/login')
+                .send({email: newEmployee.email, password: newEmployee.password})
+                .end((err, res) => {
+                  expect(res).to.have.status(200);
+                  chai.request(server)
+                      .get('/api/login')
+                      .end((err, res) => {
+                        expect(res).to.have.status(200);
+                        expect(res.body).to.have.property('msg').eql('Employee successfully logged out');
+                      });
+                });
+          done();
+          });
+    });
+  });
 });

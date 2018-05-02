@@ -21,6 +21,10 @@ const app = express();
 
 let db;
 
+// for dev purposes only
+process.env.secret_JWT = 'super secret string';
+
+
 if(process.env.NODE_ENV === "test"){
   db = mongoose.connect(config.test_db);
   app.listen(config.test_port, function(err){
@@ -43,7 +47,6 @@ if(process.env.NODE_ENV === "test"){
   });
 }
 
-
 // don't show logs during testing
 if(process.env.NODE_ENV !== "test"){
   app.use(morgan('combined'));
@@ -62,7 +65,10 @@ app.use(session({
   resave: true
 }));
 
+// initialize Passport.js
 app.use(passport.initialize());
+// there is only one Express session (initialized above)
+// we piggyback passport off of it
 app.use(passport.session());
 
 app.use(expressValidator({}));
@@ -71,11 +77,6 @@ app.use(function(req, res, next){
   res.locals.user = req.user || null;
   next();
 });
-
-
-
-
-
 
 // import routes
 router(app);

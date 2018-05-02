@@ -4,6 +4,9 @@ const Role = require('../models/role');
 const bcrypt = require('bcryptjs');
 const { check, validationResult } = require('express-validator/check');
 const { matchedData, sanitize } = require('express-validator/filter');
+const passport = require('passport');
+const LocalStrategy = require('passport-local').Strategy;
+// const BasicStrategy = require('passport-http').BasicStrategy;
 
 // GET all the employees
 exports.getEmployees = (req, res, next) => {
@@ -111,4 +114,101 @@ exports.deleteEmployee = (req, res, next) => {
     if(err) res.status(422).json({error: err});
     else return res.status(200).json({result, msg: 'Successfully deleted employee'});
   });
+};
+
+
+
+/////////////////////////////////////////
+// // strategy must come before login POST request
+passport.use(new LocalStrategy({
+  // rename fields
+  // By default, LocalStrategy expects to find credentials in parameters named
+  // username and password. If your site prefers to name these fields differently,
+  // options are available to change the defaults.
+  // passwordField: 'password'
+  usernameField: 'email'
+},
+  function(email, password, done){
+    // 2: working to here so far
+    // console.log('hey 2');
+    Employee.findOne({email: email}, function(err,user){
+      // 4: working here so far
+      // console.log('hey 4');
+      if(err) return done(err);
+      // if there is no username match
+      if(!user){
+        // 5: working here so far
+        // console.log('hey 5 - OR: email not in DB');
+        return done(null, false, 'email not in DB.');
+      }
+      // continue if there is an employee match
+      // console.log('hey 5 - OR: found employee');
+      // user.password is the hashed password from the DB
+      // remember, user is just the session global variable
+      // console.log('hey 6 - OR: checking password');
+      bcrypt.compare(password, user.password, function(err, isMatch){
+        if(err) return done(err);
+        if(isMatch){
+          // console.log('hey 7 - OR: passwords match');
+          return done(null, user);
+        } else {
+          // console.log('hey 7 - OR: passwords dont match');
+          return done(null, false, 'Incorrect password');
+        } // BOOM FrickALOOOOOOOOM!!!!! it all works
+      });
+    });
+  }
+));
+
+// serialize and deserialize
+passport.serializeUser(function(user, done){
+  // user is a session variable
+  done(null, user.id);
+});
+passport.deserializeUser(function(id, done){
+  Employee.findById(id, function(err, user){
+    console.log('dessssssss');
+    done(err, user);
+  });
+});
+
+
+// exports.login = passport.authenticate('local', {
+//   // successRedirect: '/api/login/login_success',
+//   failureRedirect: '/api/login/login_error', // 1: working to here so far (changed route to test)
+//   failureFlash: false
+// }),
+// function(req, res, next) {
+//   // if this function gets called, authentication was Successful
+//   // 'req.employee' contains the autenticated user
+//   // res.redirect('/');
+//   console.log(req.body);
+//   console.log(req.user);
+//   res.redirect('/api/login/login_success');
+//   // return res.status(200).json({msg: 'Employee successfully logged in'});
+// };
+
+exports.login = (req, res, next) => {
+  passport.authenticate('local', function(err, user, info){
+    if(err) return next(err);
+    if(!user) {
+      return res.status(401).json({msg: 'Employee login failed', reason: info});
+    }
+    req.logIn(user, function(err){
+      if(err) return next(err);
+      return res.status(200).json({msg: 'Employee successfully logged in', employee: req.user});
+    });
+  })(req, res, next);
+};
+
+exports.logout = (req, res, next) => {
+  // if(!req.user) res.status(500).json({msg: 'Why log out if not logged in?'});
+  // else {
+  //   req.logOut();
+  //   return res.status(200).json({msg: 'Employee successfully logged out'});
+  // }
+  if(!req.user) console.log('no user');
+  req.logOut();
+  return res.status(200).json({msg: 'Employee successfully logged out'});
+
 };

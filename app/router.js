@@ -1,4 +1,5 @@
 const express = require('express');
+
 const EmployeeController = require('./controllers/employee.controller');
 const RoleController = require('./controllers/role.controller');
 const RestaurantController = require('./controllers/restaurant.controller');
@@ -9,12 +10,13 @@ module.exports = function(app){
   const employeeRoutes = express.Router();
   const roleRoutes = express.Router();
   const restaurantRoutes = express.Router();
+  const loginRoutes = express.Router();
 
   // employee routes middleware for apiRoutes
   apiRoutes.use('/employees', employeeRoutes);
   apiRoutes.use('/roles', roleRoutes);
   apiRoutes.use('/restaurant', restaurantRoutes);
-
+  apiRoutes.use('/login', loginRoutes);
 
   /// Employee Routes /////////////////////
   // get all employees
@@ -29,6 +31,12 @@ module.exports = function(app){
   employeeRoutes.delete('/:id', EmployeeController.deleteEmployee);
   // update employee - assign role by id
   employeeRoutes.put('/:id/assignrole/:role_id', EmployeeController.assignRole);
+
+  // / Login Routes /////////////////////
+  loginRoutes.post('/', EmployeeController.login);
+  // LOGOUT
+  loginRoutes.get('/', EmployeeController.logout);
+
 
   /// Role Routes /////////////////////
   // get all roles
