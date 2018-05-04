@@ -516,10 +516,12 @@ describe('Employees',() => {
                 .send({email: newEmployee.email, password: newEmployee.password})
                 .end((err, res) => {
                   expect(res).to.have.status(200);
-                  expect(res.body).to.have.property('msg').eql('Employee successfully logged in');
-                  expect(res.body).to.have.property('employee').which.is.an('object');
-                  expect(res.body.employee).to.have.property('first_name').eql(newEmployee.first_name);
-                  expect(res.body.employee).to.have.property('email').eql(newEmployee.email);
+                  expect(res.body).to.have.property('auth').eql(true);
+                  expect(res.body).to.have.property('token').which.is.an('string');
+                  // expect(res.body).to.have.property('msg').eql('Employee successfully logged in');
+                  // expect(res.body).to.have.property('employee').which.is.an('object');
+                  // expect(res.body.employee).to.have.property('first_name').eql(newEmployee.first_name);
+                  // expect(res.body.employee).to.have.property('email').eql(newEmployee.email);
                 });
           done();
           });
@@ -546,14 +548,16 @@ describe('Employees',() => {
                 .post('/api/login')
                 .send({email: 'bad@email.pizza', password: newEmployee.password})
                 .end((err, res) => {
-                  expect(res).to.have.status(401);
-                  expect(res.body).to.have.property('msg').eql('Employee login failed');
+                  expect(res).to.have.status(400);
+                  // expect(res.body).to.have.property('msg').eql('Employee login failed');
                   expect(res.body).to.have.property('reason').eql('email not in DB.');
+                  expect(res.body).to.have.property('auth').eql(false);
+                  expect(res.body).to.have.property('token').eql(null);
                 });
           done();
           });
     });
-    it('it should not login employee if password incorrect',(done) => {
+     it('it should not login employee if password incorrect',(done) => {
       const newEmployee = new Employee({
         first_name: 'Jon',
         middle_name: 'Aegon',
@@ -575,9 +579,11 @@ describe('Employees',() => {
                 .post('/api/login')
                 .send({email: newEmployee.email, password: 'badPassword123'})
                 .end((err, res) => {
-                  expect(res).to.have.status(401);
-                  expect(res.body).to.have.property('msg').eql('Employee login failed');
+                  expect(res).to.have.status(400);
+                  // expect(res.body).to.have.property('msg').eql('Employee login failed');
                   expect(res.body).to.have.property('reason').eql('Incorrect password');
+                  expect(res.body).to.have.property('auth').eql(false);
+                  expect(res.body).to.have.property('token').eql(null);
                 });
           done();
           });
@@ -609,7 +615,9 @@ describe('Employees',() => {
                       .get('/api/login')
                       .end((err, res) => {
                         expect(res).to.have.status(200);
-                        expect(res.body).to.have.property('msg').eql('Employee successfully logged out');
+                        // expect(res.body).to.have.property('msg').eql('Employee successfully logged out');
+                        expect(res.body).to.have.property('auth').eql(false);
+                        expect(res.body).to.have.property('token').eql(null);
                       });
                 });
           done();

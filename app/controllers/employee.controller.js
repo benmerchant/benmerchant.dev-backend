@@ -6,17 +6,15 @@ const { check, validationResult } = require('express-validator/check');
 const { matchedData, sanitize } = require('express-validator/filter');
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
-// const BasicStrategy = require('passport-http').BasicStrategy;
+const jwt = require('jsonwebtoken');
 
 // GET all the employees
 exports.getEmployees = (req, res, next) => {
   Employee.find({}).exec((err, employees) => {
     if(err){
       res.status(500).json({error:err});
-      return next(err);
     }
     return res.status(200).json({employees: employees});
-    return next();
   });
 };
 
@@ -167,36 +165,31 @@ passport.serializeUser(function(user, done){
 });
 passport.deserializeUser(function(id, done){
   Employee.findById(id, function(err, user){
-    console.log('dessssssss');
+    console.log('this code isnt being invoked in the test, but is normally');
     done(err, user);
   });
 });
 
 
-// exports.login = passport.authenticate('local', {
-//   // successRedirect: '/api/login/login_success',
-//   failureRedirect: '/api/login/login_error', // 1: working to here so far (changed route to test)
-//   failureFlash: false
-// }),
-// function(req, res, next) {
-//   // if this function gets called, authentication was Successful
-//   // 'req.employee' contains the autenticated user
-//   // res.redirect('/');
-//   console.log(req.body);
-//   console.log(req.user);
-//   res.redirect('/api/login/login_success');
-//   // return res.status(200).json({msg: 'Employee successfully logged in'});
-// };
-
 exports.login = (req, res, next) => {
   passport.authenticate('local', function(err, user, info){
     if(err) return next(err);
     if(!user) {
-      return res.status(401).json({msg: 'Employee login failed', reason: info});
+      // return res.status(401).json({msg: 'Employee login failed', reason: info});
+      // return res.status(401).json({auth: false, token: null, reason: info});
+      // trying to get around Possibly Unhandled Rejection -- it works
+      // i want to get the data from the json response
+      // but AngularJS is preventing this
+      return res.status(400).json({auth: false, token: null, reason: info});
+      // sending 401. AngularJS won't let me get the data. Just use 400...
     }
     req.logIn(user, function(err){
       if(err) return next(err);
-      return res.status(200).json({msg: 'Employee successfully logged in', employee: req.user});
+      let token = jwt.sign({id:req.user._id},process.env.secret_JWT,{
+        expiresIn: 3600 // one hour
+      });
+      return res.status(200).json({auth: true, token: token});
+      // return res.status(200).json({msg: 'Employee successfully logged in', employee: req.user});
     });
   })(req, res, next);
 };
@@ -209,6 +202,6 @@ exports.logout = (req, res, next) => {
   // }
   if(!req.user) console.log('no user');
   req.logOut();
-  return res.status(200).json({msg: 'Employee successfully logged out'});
+  return res.status(200).json({auth: false, token: null});
 
 };
