@@ -14,6 +14,15 @@ const sinonMongoose = require('sinon-mongoose');
 const server = require('../server');
 const expect = require('chai').expect;
 
+// this is the actual password we create in the api route. hardcoded
+// not sure how we'd test login with dynamically generated password
+const temporaryPassword = 'temporaryPass';
+
+
+// on some of the tests we are saving an employee directly to the database
+// well Mongoose requires a password, and since password is created
+// using the api route, we just send one that is irrelevant
+
 
 chai.use(chaiHttp);
 
@@ -52,8 +61,7 @@ describe('Employees',() => {
         ssn: 333224444,
         gender: 'Male',
         display_name: 'Jon S',
-        email: 'whitewolf@winterfell.gov',
-        password: 'w1nt3rI$coming'
+        email: 'whitewolf@winterfell.gov'
       };
       chai.request(server)
           .post('/api/employees')
@@ -78,8 +86,7 @@ describe('Employees',() => {
         ssn: 333224444,
         gender: 'Male',
         display_name: 'Jon S',
-        email: 'whitewolf@winterfell.gov',
-        password: 'w1nt3rI$coming'
+        email: 'whitewolf@winterfell.gov'
       };
       chai.request(server)
           .post('/api/employees')
@@ -103,8 +110,7 @@ describe('Employees',() => {
         ssn: 333224444,
         gender: 'Male',
         display_name: 'Jon S',
-        email: 'whitewolf@winterfell.gov',
-        password: 'w1nt3rI$coming'
+        email: 'whitewolf@winterfell.gov'
       };
       chai.request(server)
           .post('/api/employees')
@@ -128,8 +134,7 @@ describe('Employees',() => {
         pin_num: 1234,
         ssn: 333224444,
         gender: 'Male',
-        display_name: 'Jon S',
-        password: 'w1nt3rI$coming'
+        display_name: 'Jon S'
       };
       chai.request(server)
           .post('/api/employees')
@@ -153,8 +158,7 @@ describe('Employees',() => {
         ssn: 333224444,
         gender: 'Male',
         display_name: 'Jon S',
-        email: 'whitewolf@winterfell.gov',
-        password: 'w1nt3rI$coming'
+        email: 'whitewolf@winterfell.gov'
       };
       chai.request(server)
           .post('/api/employees')
@@ -168,57 +172,8 @@ describe('Employees',() => {
           done();
         });
     });
-    // not testing (if PW exists, b/c we're checking length already)
-    it('it should not POST an employee with password.length > 8 - express-validator', (done) => {
-      const employee = {
-        first_name: 'Jon',
-        middle_name: 'Aegon',
-        last_name: 'Snow',
-        login_number: 123456,
-        pin_num: 1234,
-        ssn: 333224444,
-        gender: 'Male',
-        display_name: 'Jon S',
-        email: 'whitewolf@winterfell.gov',
-        password: '1234567'
-      };
-      chai.request(server)
-          .post('/api/employees')
-          .send(employee)
-          .end((err, res) => {
-            expect(res).to.have.status(422);
-            expect(res.body).to.be.an('object');
-            expect(res.body).to.have.property('errors');
-            expect(res.body.errors).to.have.property('password');
-            expect(res.body.errors.password).to.have.property('msg').eql('Password must be at least 8 characters');
-          done();
-        });
-    });
-    it('it should not POST an employee with password.length <= 24 - express-validator', (done) => {
-      const employee = {
-        first_name: 'Jon',
-        middle_name: 'Aegon',
-        last_name: 'Snow',
-        login_number: 123456,
-        pin_num: 1234,
-        ssn: 333224444,
-        gender: 'Male',
-        display_name: 'Jon S',
-        email: 'whitewolf@winterfell.gov',
-        password: '1234567812345678123456780'
-      };
-      chai.request(server)
-          .post('/api/employees')
-          .send(employee)
-          .end((err, res) => {
-            expect(res).to.have.status(422);
-            expect(res.body).to.be.an('object');
-            expect(res.body).to.have.property('errors');
-            expect(res.body.errors).to.have.property('password');
-            expect(res.body.errors.password).to.have.property('msg').eql('Password must be no more than characters');
-          done();
-        });
-    });
+
+
     it('it should not POST an employee without ssn field - Mongoose', (done) => {
       const employee = {
         first_name: 'Jon',
@@ -228,8 +183,7 @@ describe('Employees',() => {
         pin_num: 1234,
         gender: 'Male',
         display_name: 'Jon S',
-        email: 'whitewolf@winterfell.gov',
-        password: 'w1nt3rI$coming'
+        email: 'whitewolf@winterfell.gov'
       };
       chai.request(server)
           .post('/api/employees')
@@ -253,8 +207,7 @@ describe('Employees',() => {
         pin_num: 1234,
         ssn: 333224444,
         display_name: 'Jon S',
-        email: 'whitewolf@winterfell.gov',
-        password: 'w1nt3rI$coming'
+        email: 'whitewolf@winterfell.gov'
       };
       chai.request(server)
           .post('/api/employees')
@@ -279,8 +232,9 @@ describe('Employees',() => {
         pin_num: 1234,
         ssn: 333224444,
         gender: 'Male',
-        email: 'whitewolf@winterfell.gov',
-        password: 'w1nt3rI$coming'
+        email: 'whitewolf@winterfell.gov'
+        // we're going to start auto generating temporary passwords
+        // password: 'w1nt3rI$coming'
       };
       chai.request(server)
           .post('/api/employees')
@@ -300,7 +254,7 @@ describe('Employees',() => {
             expect(res.body.employee).to.have.property('email');
             expect(res.body.employee).to.have.property('password');
             // test that password is hashing into something different
-            expect(res.body.employee.password).to.not.be.eql(employee.password);
+            // expect(res.body.employee.password).to.not.be.eql(employee.password);
             // fields generated by the API
             expect(res.body.employee).to.have.property('display_name');
             expect(res.body.employee).to.have.property('hire_date');
@@ -322,8 +276,7 @@ describe('Employees',() => {
         ssn: 333224444,
         gender: 'Male',
         email: 'whitewolf@winterfell.gov',
-        password: 'w1nt3rI$coming'
-        // we aren't hashing the password, but express validates that anyways not mongoose
+        password: 'irrelevant' // this is skipping the create temp pass route
       });
       // we know last_name is include, reproduce server side creation of  display_name
       employee.display_name = `${employee.first_name} ${employee.last_name.substring(0,1)}`;
@@ -352,8 +305,7 @@ describe('Employees',() => {
         ssn: 333224444,
         gender: 'Male',
         email: 'whitewolf@winterfell.gov',
-        password: 'w1nt3rI$coming'
-        // we aren't hashing the password, but express validates that anyways not mongoose
+        password: 'irrelevant' // this is skipping the create temp pass route
       });
       // we know last_name is include, reproduce server side creation of  display_name
       employee.display_name = `${employee.first_name} ${employee.last_name.substring(0,1)}`;
@@ -380,7 +332,7 @@ describe('Employees',() => {
         ssn: 333224444,
         gender: 'Male',
         email: 'whitewolf@winterfell.gov',
-        password: 'w1nt3rI$coming'
+        password: 'irrelevant' // this is skipping the create temp pass route
       });
       newEmployee.display_name = `${newEmployee.first_name} ${newEmployee.last_name.substring(0,1)}`;
       // remove all roles in test db
@@ -422,7 +374,7 @@ describe('Employees',() => {
         ssn: 333224444,
         gender: 'Male',
         email: 'whitewolf@winterfell.gov',
-        password: 'w1nt3rI$coming'
+        password: 'irrelevant' // this is skipping the create temp pass route
       });
       newEmployee.display_name = `${newEmployee.first_name} ${newEmployee.last_name.substring(0,1)}`;
       // remove all roles in test db
@@ -472,8 +424,7 @@ describe('Employees',() => {
         ssn: 333224444,
         gender: 'Male',
         email: 'whitewolf@winterfell.gov',
-        password: 'w1nt3rI$coming'
-        // we aren't hashing the password, but express validates that anyways not mongoose
+        password: 'irrelevant' // this is skipping the create temp pass route
       });
       // we know last_name is include, reproduce server side creation of  display_name
       employee.display_name = `${employee.first_name} ${employee.last_name.substring(0,1)}`;
@@ -501,8 +452,7 @@ describe('Employees',() => {
         pin_num: 1234,
         ssn: 333224444,
         gender: 'Male',
-        email: 'whitewolf@winterfell.gov',
-        password: 'w1nt3rI$coming'
+        email: 'whitewolf@winterfell.gov'
       });
       newEmployee.display_name = `${newEmployee.first_name} ${newEmployee.last_name.substring(0,1)}`;
       // have to test two http requests. because we need to hash that password
@@ -513,7 +463,7 @@ describe('Employees',() => {
             expect(res).to.have.status(200);
             chai.request(server)
                 .post('/api/login')
-                .send({email: newEmployee.email, password: newEmployee.password})
+                .send({email: newEmployee.email, password: temporaryPassword})
                 .end((err, res) => {
                   expect(res).to.have.status(200);
                   expect(res.body).to.have.property('auth').eql(true);
@@ -535,8 +485,7 @@ describe('Employees',() => {
         pin_num: 1234,
         ssn: 333224444,
         gender: 'Male',
-        email: 'whitewolf@winterfell.gov',
-        password: 'w1nt3rI$coming'
+        email: 'whitewolf@winterfell.gov'
       });
       newEmployee.display_name = `${newEmployee.first_name} ${newEmployee.last_name.substring(0,1)}`;
       chai.request(server)
@@ -546,7 +495,7 @@ describe('Employees',() => {
             expect(res).to.have.status(200);
             chai.request(server)
                 .post('/api/login')
-                .send({email: 'bad@email.pizza', password: newEmployee.password})
+                .send({email: 'bad@email.pizza', password: temporaryPassword})
                 .end((err, res) => {
                   expect(res).to.have.status(400);
                   // expect(res.body).to.have.property('msg').eql('Employee login failed');
@@ -608,7 +557,7 @@ describe('Employees',() => {
             expect(res).to.have.status(200);
             chai.request(server)
                 .post('/api/login')
-                .send({email: newEmployee.email, password: newEmployee.password})
+                .send({email: newEmployee.email, password: temporaryPassword })
                 .end((err, res) => {
                   expect(res).to.have.status(200);
                   chai.request(server)
