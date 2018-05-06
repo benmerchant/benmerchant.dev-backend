@@ -221,7 +221,8 @@ describe('Roles', () => {
         ssn: 333224444,
         gender: 'Male',
         email: 'whitewolf@winterfell.gov',
-        password: 'w1nt3rI$coming'
+        password: 'w1nt3rI$coming',
+        birth_date: new Date(1985, 12, 25)
       });
       newEmployee.display_name = `${newEmployee.first_name} ${newEmployee.last_name.substring(0,1)}`;
 

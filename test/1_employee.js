@@ -61,7 +61,8 @@ describe('Employees',() => {
         ssn: 333224444,
         gender: 'Male',
         display_name: 'Jon S',
-        email: 'whitewolf@winterfell.gov'
+        email: 'whitewolf@winterfell.gov',
+        birth_date: new Date(1985, 12, 25)
       };
       chai.request(server)
           .post('/api/employees')
@@ -86,7 +87,8 @@ describe('Employees',() => {
         ssn: 333224444,
         gender: 'Male',
         display_name: 'Jon S',
-        email: 'whitewolf@winterfell.gov'
+        email: 'whitewolf@winterfell.gov',
+        birth_date: new Date(1985, 12, 25)
       };
       chai.request(server)
           .post('/api/employees')
@@ -110,7 +112,8 @@ describe('Employees',() => {
         ssn: 333224444,
         gender: 'Male',
         display_name: 'Jon S',
-        email: 'whitewolf@winterfell.gov'
+        email: 'whitewolf@winterfell.gov',
+        birth_date: new Date(1985, 12, 25)
       };
       chai.request(server)
           .post('/api/employees')
@@ -134,7 +137,8 @@ describe('Employees',() => {
         pin_num: 1234,
         ssn: 333224444,
         gender: 'Male',
-        display_name: 'Jon S'
+        display_name: 'Jon S',
+        birth_date: new Date(1985, 12, 25)
       };
       chai.request(server)
           .post('/api/employees')
@@ -158,7 +162,8 @@ describe('Employees',() => {
         ssn: 333224444,
         gender: 'Male',
         display_name: 'Jon S',
-        email: 'whitewolf@winterfell.gov'
+        email: 'whitewolf@winterfell.gov',
+        birth_date: new Date(1985, 12, 25)
       };
       chai.request(server)
           .post('/api/employees')
@@ -183,7 +188,8 @@ describe('Employees',() => {
         pin_num: 1234,
         gender: 'Male',
         display_name: 'Jon S',
-        email: 'whitewolf@winterfell.gov'
+        email: 'whitewolf@winterfell.gov',
+        birth_date: new Date(1985, 12, 25)
       };
       chai.request(server)
           .post('/api/employees')
@@ -207,7 +213,8 @@ describe('Employees',() => {
         pin_num: 1234,
         ssn: 333224444,
         display_name: 'Jon S',
-        email: 'whitewolf@winterfell.gov'
+        email: 'whitewolf@winterfell.gov',
+        birth_date: new Date(1985, 12, 25)
       };
       chai.request(server)
           .post('/api/employees')
@@ -222,6 +229,31 @@ describe('Employees',() => {
           done();
         });
     });
+    it('it should not POST an employee without birth_date field - Mongoose', (done) => {
+      const employee = {
+        first_name: 'Jon',
+        middle_name: 'Aegon',
+        last_name: 'Snow',
+        login_number: 123456,
+        pin_num: 1234,
+        ssn: 333224444,
+        display_name: 'Jon S',
+        email: 'whitewolf@winterfell.gov',
+        gender: 'Male'
+      };
+      chai.request(server)
+          .post('/api/employees')
+          .send(employee)
+          .end((err, res) => {
+            expect(res).to.have.status(500);
+            expect(res.body).to.be.an('object');
+            expect(res.body).to.have.property('error');
+            expect(res.body.error).to.have.property('errors');
+            expect(res.body.error.errors).to.have.property('birth_date');
+            expect(res.body.error.errors.birth_date).to.have.property('kind').eql('required');
+          done();
+        });
+    });
 
     it('it should POST a new employee', (done) => {
       const employee = {
@@ -232,7 +264,8 @@ describe('Employees',() => {
         pin_num: 1234,
         ssn: 333224444,
         gender: 'Male',
-        email: 'whitewolf@winterfell.gov'
+        email: 'whitewolf@winterfell.gov',
+        birth_date: new Date(1985, 12, 25)
         // we're going to start auto generating temporary passwords
         // password: 'w1nt3rI$coming'
       };
@@ -276,7 +309,8 @@ describe('Employees',() => {
         ssn: 333224444,
         gender: 'Male',
         email: 'whitewolf@winterfell.gov',
-        password: 'irrelevant' // this is skipping the create temp pass route
+        password: 'irrelevant',
+        birth_date: new Date(1985, 12, 25) // this is skipping the create temp pass route
       });
       // we know last_name is include, reproduce server side creation of  display_name
       employee.display_name = `${employee.first_name} ${employee.last_name.substring(0,1)}`;
@@ -305,7 +339,8 @@ describe('Employees',() => {
         ssn: 333224444,
         gender: 'Male',
         email: 'whitewolf@winterfell.gov',
-        password: 'irrelevant' // this is skipping the create temp pass route
+        password: 'irrelevant',
+        birth_date: new Date(1985, 12, 25) // this is skipping the create temp pass route
       });
       // we know last_name is include, reproduce server side creation of  display_name
       employee.display_name = `${employee.first_name} ${employee.last_name.substring(0,1)}`;
@@ -332,7 +367,8 @@ describe('Employees',() => {
         ssn: 333224444,
         gender: 'Male',
         email: 'whitewolf@winterfell.gov',
-        password: 'irrelevant' // this is skipping the create temp pass route
+        password: 'irrelevant',
+        birth_date: new Date(1985, 12, 25) // this is skipping the create temp pass route
       });
       newEmployee.display_name = `${newEmployee.first_name} ${newEmployee.last_name.substring(0,1)}`;
       // remove all roles in test db
@@ -374,7 +410,8 @@ describe('Employees',() => {
         ssn: 333224444,
         gender: 'Male',
         email: 'whitewolf@winterfell.gov',
-        password: 'irrelevant' // this is skipping the create temp pass route
+        password: 'irrelevant',
+        birth_date: new Date(1985, 12, 25) // this is skipping the create temp pass route
       });
       newEmployee.display_name = `${newEmployee.first_name} ${newEmployee.last_name.substring(0,1)}`;
       // remove all roles in test db
@@ -424,7 +461,8 @@ describe('Employees',() => {
         ssn: 333224444,
         gender: 'Male',
         email: 'whitewolf@winterfell.gov',
-        password: 'irrelevant' // this is skipping the create temp pass route
+        password: 'irrelevant',
+        birth_date: new Date(1985, 12, 25) // this is skipping the create temp pass route
       });
       // we know last_name is include, reproduce server side creation of  display_name
       employee.display_name = `${employee.first_name} ${employee.last_name.substring(0,1)}`;
@@ -452,7 +490,8 @@ describe('Employees',() => {
         pin_num: 1234,
         ssn: 333224444,
         gender: 'Male',
-        email: 'whitewolf@winterfell.gov'
+        email: 'whitewolf@winterfell.gov',
+        birth_date: new Date(1985, 12, 25)
       });
       newEmployee.display_name = `${newEmployee.first_name} ${newEmployee.last_name.substring(0,1)}`;
       // have to test two http requests. because we need to hash that password
@@ -485,7 +524,8 @@ describe('Employees',() => {
         pin_num: 1234,
         ssn: 333224444,
         gender: 'Male',
-        email: 'whitewolf@winterfell.gov'
+        email: 'whitewolf@winterfell.gov',
+        birth_date: new Date(1985, 12, 25)
       });
       newEmployee.display_name = `${newEmployee.first_name} ${newEmployee.last_name.substring(0,1)}`;
       chai.request(server)
@@ -516,7 +556,8 @@ describe('Employees',() => {
         ssn: 333224444,
         gender: 'Male',
         email: 'whitewolf@winterfell.gov',
-        password: 'w1nt3rI$coming'
+        password: 'w1nt3rI$coming',
+        birth_date: new Date(1985, 12, 25)
       });
       newEmployee.display_name = `${newEmployee.first_name} ${newEmployee.last_name.substring(0,1)}`;
       chai.request(server)
@@ -547,7 +588,8 @@ describe('Employees',() => {
         ssn: 333224444,
         gender: 'Male',
         email: 'whitewolf@winterfell.gov',
-        password: 'w1nt3rI$coming'
+        password: 'w1nt3rI$coming',
+        birth_date: new Date(1985, 12, 25)
       });
       newEmployee.display_name = `${newEmployee.first_name} ${newEmployee.last_name.substring(0,1)}`;
       chai.request(server)
