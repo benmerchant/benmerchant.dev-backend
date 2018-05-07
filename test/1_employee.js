@@ -18,6 +18,8 @@ const expect = require('chai').expect;
 // not sure how we'd test login with dynamically generated password
 const temporaryPassword = 'temporaryPass';
 
+const tempPinNum = 2358;
+
 
 // on some of the tests we are saving an employee directly to the database
 // well Mongoose requires a password, and since password is created
@@ -57,7 +59,6 @@ describe('Employees',() => {
       const employee = {
         middle_name: 'Aegon',
         last_name: 'Snow',
-        pin_num: 1234,
         ssn: 333224444,
         gender: 'Male',
         display_name: 'Jon S',
@@ -82,7 +83,6 @@ describe('Employees',() => {
         first_name: 'Jon',
         middle_name: 'Aegon',
         last_name: 'Snow',
-        pin_num: 1234,
         ssn: 333224444,
         gender: 'Male',
         display_name: 'Jon S',
@@ -105,7 +105,6 @@ describe('Employees',() => {
       const employee = {
         first_name: 'Jon',
         middle_name: 'Aegon',
-        pin_num: 1234,
         ssn: 333224444,
         gender: 'Male',
         display_name: 'Jon S',
@@ -131,7 +130,6 @@ describe('Employees',() => {
         first_name: 'Jon',
         middle_name: 'Aegon',
         last_name: 'Snow',
-        pin_num: 1234,
         gender: 'Male',
         display_name: 'Jon S',
         email: 'whitewolf@winterfell.gov',
@@ -155,7 +153,6 @@ describe('Employees',() => {
         first_name: 'Jon',
         middle_name: 'Aegon',
         last_name: 'Snow',
-        pin_num: 1234,
         ssn: 333224444,
         display_name: 'Jon S',
         email: 'whitewolf@winterfell.gov',
@@ -179,7 +176,6 @@ describe('Employees',() => {
         first_name: 'Jon',
         middle_name: 'Aegon',
         last_name: 'Snow',
-        pin_num: 1234,
         ssn: 333224444,
         display_name: 'Jon S',
         email: 'whitewolf@winterfell.gov',
@@ -204,7 +200,6 @@ describe('Employees',() => {
         first_name: 'Jon',
         middle_name: 'Aegon',
         last_name: 'Snow',
-        pin_num: 1234,
         ssn: 333224444,
         gender: 'Male',
         email: 'whitewolf@winterfell.gov',
@@ -223,7 +218,7 @@ describe('Employees',() => {
             expect(res.body.employee).to.have.property('first_name');
             expect(res.body.employee).to.have.property('middle_name');
             expect(res.body.employee).to.have.property('last_name');
-            expect(res.body.employee).to.have.property('login_number').eql(100001);
+            expect(res.body.employee).to.have.property('login_number').eql(10001);
             expect(res.body.employee).to.have.property('pin_num');
             expect(res.body.employee).to.have.property('ssn');
             expect(res.body.employee).to.have.property('gender');
@@ -246,20 +241,19 @@ describe('Employees',() => {
         middle_name: 'Rock',
         last_name: 'Flinstone',
         login_number: 10001,
-        pin_num: 1234,
         ssn: 6664442525,
         gender: 'Male',
         email: 'fred@rocks.com',
         birth_date: new Date(1967, 4, 12),
         password: 'irrelevant',
-        display_name: 'Fred R'
+        display_name: 'Fred R',
+        pin_num: 3333
       });
       const employee = {
         first_name: 'Jon',
         middle_name: 'Aegon',
         last_name: 'Snow',
         login_number: 123456,
-        pin_num: 1234,
         ssn: 333224444,
         gender: 'Male',
         email: 'whitewolf@winterfell.gov',
@@ -307,11 +301,11 @@ describe('Employees',() => {
         middle_name: 'Aegon',
         last_name: 'Snow',
         login_number: 123456,
-        pin_num: 1234,
         ssn: 333224444,
         gender: 'Male',
         email: 'whitewolf@winterfell.gov',
         password: 'irrelevant',
+        pin_num: 3333,
         birth_date: new Date(1985, 12, 25) // this is skipping the create temp pass route
       });
       // we know last_name is include, reproduce server side creation of  display_name
@@ -337,11 +331,11 @@ describe('Employees',() => {
         middle_name: 'Aegon',
         last_name: 'Snow',
         login_number: 123456,
-        pin_num: 1234,
         ssn: 333224444,
         gender: 'Male',
         email: 'whitewolf@winterfell.gov',
         password: 'irrelevant',
+        pin_num: 3333,
         birth_date: new Date(1985, 12, 25) // this is skipping the create temp pass route
       });
       // we know last_name is include, reproduce server side creation of  display_name
@@ -365,11 +359,11 @@ describe('Employees',() => {
         middle_name: 'Aegon',
         last_name: 'Snow',
         login_number: 123456,
-        pin_num: 1234,
         ssn: 333224444,
         gender: 'Male',
         email: 'whitewolf@winterfell.gov',
         password: 'irrelevant',
+        pin_num: 3333,
         birth_date: new Date(1985, 12, 25) // this is skipping the create temp pass route
       });
       newEmployee.display_name = `${newEmployee.first_name} ${newEmployee.last_name.substring(0,1)}`;
@@ -408,11 +402,11 @@ describe('Employees',() => {
         middle_name: 'Aegon',
         last_name: 'Snow',
         login_number: 123456,
-        pin_num: 1234,
         ssn: 333224444,
         gender: 'Male',
         email: 'whitewolf@winterfell.gov',
         password: 'irrelevant',
+        pin_num: 3333,
         birth_date: new Date(1985, 12, 25) // this is skipping the create temp pass route
       });
       newEmployee.display_name = `${newEmployee.first_name} ${newEmployee.last_name.substring(0,1)}`;
@@ -459,11 +453,11 @@ describe('Employees',() => {
         middle_name: 'Aegon',
         last_name: 'Snow',
         login_number: 123456,
-        pin_num: 1234,
         ssn: 333224444,
         gender: 'Male',
         email: 'whitewolf@winterfell.gov',
         password: 'irrelevant',
+        pin_num: 3333,
         birth_date: new Date(1985, 12, 25) // this is skipping the create temp pass route
       });
       // we know last_name is include, reproduce server side creation of  display_name
@@ -489,10 +483,10 @@ describe('Employees',() => {
         middle_name: 'Aegon',
         last_name: 'Snow',
         login_number: 123456,
-        pin_num: 1234,
         ssn: 333224444,
         gender: 'Male',
         email: 'whitewolf@winterfell.gov',
+        pin_num: 3333,
         birth_date: new Date(1985, 12, 25)
       });
       newEmployee.display_name = `${newEmployee.first_name} ${newEmployee.last_name.substring(0,1)}`;
@@ -523,10 +517,10 @@ describe('Employees',() => {
         middle_name: 'Aegon',
         last_name: 'Snow',
         login_number: 123456,
-        pin_num: 1234,
         ssn: 333224444,
         gender: 'Male',
         email: 'whitewolf@winterfell.gov',
+        pin_num: 3333,
         birth_date: new Date(1985, 12, 25)
       });
       newEmployee.display_name = `${newEmployee.first_name} ${newEmployee.last_name.substring(0,1)}`;
@@ -554,7 +548,6 @@ describe('Employees',() => {
         middle_name: 'Aegon',
         last_name: 'Snow',
         login_number: 123456,
-        pin_num: 1234,
         ssn: 333224444,
         gender: 'Male',
         email: 'whitewolf@winterfell.gov',
@@ -586,7 +579,6 @@ describe('Employees',() => {
         middle_name: 'Aegon',
         last_name: 'Snow',
         login_number: 123456,
-        pin_num: 1234,
         ssn: 333224444,
         gender: 'Male',
         email: 'whitewolf@winterfell.gov',

@@ -43,15 +43,18 @@ exports.createEmployee = [
     newEmployee.display_name = `${req.body.first_name} ${req.body.last_name.substring(0,1)}`;
 
     let tempPassword = 'temporaryPass';
+    let tempPinNum = 2358;
 
     newEmployee.password = tempPassword;
+    newEmployee.pin_num = tempPinNum;
+
     // find the largest login_number: homemade auto increment
     let findQuery = Employee.find().sort({login_number:-1}).limit(1);
     findQuery.exec(
       function(err, emp){
         if(err) console.error(err);
         if(emp.length===0){ // if there are no existing employees
-          newEmployee.login_number = 100001;
+          newEmployee.login_number = 10001;
         } else {
           newEmployee.login_number = emp[0].login_number+1;
         }
