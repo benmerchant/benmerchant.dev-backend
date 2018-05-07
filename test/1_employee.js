@@ -52,62 +52,11 @@ describe('Employees',() => {
   });
 
   describe('/POST create Employee', () => {
-    it('it should not POST an employee without login_number field - Mongoose', (done) => {
-      const employee = {
-        first_name: 'Jon',
-        middle_name: 'Aegon',
-        last_name: 'Snow',
-        pin_num: 1234,
-        ssn: 333224444,
-        gender: 'Male',
-        display_name: 'Jon S',
-        email: 'whitewolf@winterfell.gov',
-        birth_date: new Date(1985, 12, 25)
-      };
-      chai.request(server)
-          .post('/api/employees')
-          .send(employee)
-          .end((err, res) => {
-            expect(res).to.have.status(500);
-            expect(res.body).to.be.an('object');
-            expect(res.body).to.have.property('error');
-            expect(res.body.error).to.have.property('errors');
-            expect(res.body.error.errors).to.have.property('login_number');
-            expect(res.body.error.errors.login_number).to.have.property('kind').eql('required');
-          done();
-        });
-    });
-    it('it should not POST an employee if login_number contains non-numeric - Mongoose', (done) => {
-      const employee = {
-        login_number: 'letter',
-        first_name: 'Jon',
-        middle_name: 'Aegon',
-        last_name: 'Snow',
-        pin_num: 1234,
-        ssn: 333224444,
-        gender: 'Male',
-        display_name: 'Jon S',
-        email: 'whitewolf@winterfell.gov',
-        birth_date: new Date(1985, 12, 25)
-      };
-      chai.request(server)
-          .post('/api/employees')
-          .send(employee)
-          .end((err, res) => {
-            expect(res).to.have.status(500);
-            expect(res.body).to.be.an('object');
-            expect(res.body).to.have.property('error');
-            expect(res.body.error).to.have.property('errors');
-            expect(res.body.error.errors).to.have.property('login_number');
-            expect(res.body.error.errors.login_number).to.have.property('kind').eql('Number');
-          done();
-        });
-    });
+
     it('it should not POST an employee without first_name field - Mongoose', (done) => {
       const employee = {
         middle_name: 'Aegon',
         last_name: 'Snow',
-        login_number: 123456,
         pin_num: 1234,
         ssn: 333224444,
         gender: 'Male',
@@ -133,7 +82,6 @@ describe('Employees',() => {
         first_name: 'Jon',
         middle_name: 'Aegon',
         last_name: 'Snow',
-        login_number: 123456,
         pin_num: 1234,
         ssn: 333224444,
         gender: 'Male',
@@ -157,7 +105,6 @@ describe('Employees',() => {
       const employee = {
         first_name: 'Jon',
         middle_name: 'Aegon',
-        login_number: 123456,
         pin_num: 1234,
         ssn: 333224444,
         gender: 'Male',
@@ -184,7 +131,6 @@ describe('Employees',() => {
         first_name: 'Jon',
         middle_name: 'Aegon',
         last_name: 'Snow',
-        login_number: 123456,
         pin_num: 1234,
         gender: 'Male',
         display_name: 'Jon S',
@@ -209,7 +155,6 @@ describe('Employees',() => {
         first_name: 'Jon',
         middle_name: 'Aegon',
         last_name: 'Snow',
-        login_number: 123456,
         pin_num: 1234,
         ssn: 333224444,
         display_name: 'Jon S',
@@ -234,7 +179,6 @@ describe('Employees',() => {
         first_name: 'Jon',
         middle_name: 'Aegon',
         last_name: 'Snow',
-        login_number: 123456,
         pin_num: 1234,
         ssn: 333224444,
         display_name: 'Jon S',
@@ -260,7 +204,6 @@ describe('Employees',() => {
         first_name: 'Jon',
         middle_name: 'Aegon',
         last_name: 'Snow',
-        login_number: 123456,
         pin_num: 1234,
         ssn: 333224444,
         gender: 'Male',
@@ -280,7 +223,7 @@ describe('Employees',() => {
             expect(res.body.employee).to.have.property('first_name');
             expect(res.body.employee).to.have.property('middle_name');
             expect(res.body.employee).to.have.property('last_name');
-            expect(res.body.employee).to.have.property('login_number');
+            expect(res.body.employee).to.have.property('login_number').eql(100001);
             expect(res.body.employee).to.have.property('pin_num');
             expect(res.body.employee).to.have.property('ssn');
             expect(res.body.employee).to.have.property('gender');
@@ -296,6 +239,65 @@ describe('Employees',() => {
             expect(res.body.employee.hire_date).to.be.sameMoment(new Date(), 'minute', 'test failed if hire_date equal to today');
           done();
         });
+    });
+    it('it should POST a new employee and auto increment login_number', (done) => {
+      const emp1 = new Employee({
+        first_name: 'Fred',
+        middle_name: 'Rock',
+        last_name: 'Flinstone',
+        login_number: 10001,
+        pin_num: 1234,
+        ssn: 6664442525,
+        gender: 'Male',
+        email: 'fred@rocks.com',
+        birth_date: new Date(1967, 4, 12),
+        password: 'irrelevant',
+        display_name: 'Fred R'
+      });
+      const employee = {
+        first_name: 'Jon',
+        middle_name: 'Aegon',
+        last_name: 'Snow',
+        login_number: 123456,
+        pin_num: 1234,
+        ssn: 333224444,
+        gender: 'Male',
+        email: 'whitewolf@winterfell.gov',
+        birth_date: new Date(1985, 12, 25)
+        // we're going to start auto generating temporary passwords
+        // password: 'w1nt3rI$coming'
+      };
+      // add a placeholder employee to the db to test
+      emp1.save((err, fredEmp) => {
+        chai.request(server)
+            .post('/api/employees')
+            .send(employee)
+            .end((err, res) => {
+              expect(res).to.have.status(200);
+              expect(res.body).to.be.an('object');
+              expect(res.body).to.have.property('msg').eql('Employee successfully added');
+              expect(res.body).to.have.property('employee');
+              expect(res.body.employee).to.have.property('first_name');
+              expect(res.body.employee).to.have.property('middle_name');
+              expect(res.body.employee).to.have.property('last_name');
+              // login_number should be one greater than placeholder emp1
+              expect(res.body.employee).to.have.property('login_number').eql(emp1.login_number+1);
+              expect(res.body.employee).to.have.property('pin_num');
+              expect(res.body.employee).to.have.property('ssn');
+              expect(res.body.employee).to.have.property('gender');
+              expect(res.body.employee).to.have.property('email');
+              expect(res.body.employee).to.have.property('password');
+              // test that password is hashing into something different
+              // expect(res.body.employee.password).to.not.be.eql(employee.password);
+              // fields generated by the API
+              expect(res.body.employee).to.have.property('display_name');
+              expect(res.body.employee).to.have.property('hire_date');
+              // trying to just test if hire_date is of type Date
+              // so I'm testing if the current date is w/in 1 minute of employee being saved to db
+              expect(res.body.employee.hire_date).to.be.sameMoment(new Date(), 'minute', 'test failed if hire_date equal to today');
+            done();
+          });
+      });
     });
   });
   describe('/GET/:id - retrieve employee', () => {

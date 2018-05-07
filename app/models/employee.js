@@ -9,7 +9,8 @@ const EmployeeSchema = mongoose.Schema({
   login_number: {
     type: Number,
     required: true,  // length 6-digit number
-    unique: true
+    unique: true,
+    index: true
   },
   email: {
     type: String,
