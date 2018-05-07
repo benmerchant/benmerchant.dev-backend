@@ -47,6 +47,8 @@ module.exports = function(app){
   roleRoutes.get('/:id', RoleController.getOneRole);
   // delete one role by _id
   roleRoutes.delete('/:id', RoleController.deleteRole);
+  // update role by _id
+  roleRoutes.put('/:id', RoleController.updateRole);
 
   /// Restaurant Routes /////////////////////
   // GET restaurant document

@@ -256,4 +256,28 @@ describe('Roles', () => {
       });
     });
   });
+  describe('/PUT/:id - update one role', () => {
+    it('it should UPDATE one role by _id', (done) => {
+      const newRole = new Role({
+        name: 'Server',
+        salaried: false,
+        granular_pay: 2.50,
+        manager_privileges: false
+      });
+      const newData = {granular_pay: 2.75};
+      newRole.save((err, role) => {
+        chai.request(server)
+            .put(`/api/roles/${role.id}`)
+            .send(newData)
+            .end((err, res) => {
+              expect(res).to.have.status(200);
+              expect(res.body).to.have.property('msg').eql('Successfully updated role');
+              expect(res.body).to.have.property('role');
+              expect(res.body.role).to.have.property('_id').eql(role.id);
+              expect(res.body.role).to.have.property('granular_pay').eql(newData.granular_pay);
+            done();
+            });
+      });
+    });
+  });
 });

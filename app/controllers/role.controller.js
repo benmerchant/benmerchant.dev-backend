@@ -34,7 +34,7 @@ exports.getOneRole = (req, res, next) => {
 exports.deleteRole = (req, res, next) => {
   // ensure there are no employees assigned this role
   // if there are, return the list of employees assigned
-  Employee.find({})
+  Employee.find({});
   Employee.find( {'roles._id': req.params.id }).exec((err, employees) => {
     if(err) return res.status(422).json({error: err});
     else {
@@ -48,6 +48,12 @@ exports.deleteRole = (req, res, next) => {
       }
     }
   });
+};
 
-
+exports.updateRole = (req, res) => {
+  Role.findByIdAndUpdate(req.params.id,req.body,{new: true, safe: true})
+    .exec((err, role) => {
+      if(err) return res.status(422).json({error: err});
+      else return res.status(200).json({msg: 'Successfully updated role', role: role});
+    });
 };
