@@ -57,6 +57,8 @@ module.exports = function(app){
   restaurantRoutes.post('/', RestaurantController.createRestaurant);
   // update restaurant hours
   restaurantRoutes.put('/:id', RestaurantController.updateRestaurant);
+  // add dining dining_areas
+  restaurantRoutes.put('/add/diningarea/:restaurantID', RestaurantController.addDiningArea);
 
   // url for all API routes
   app.use('/api', apiRoutes);

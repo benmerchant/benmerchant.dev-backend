@@ -521,7 +521,8 @@ describe('Employees',() => {
         gender: 'Male',
         email: 'whitewolf@winterfell.gov',
         pin_num: 3333,
-        birth_date: new Date(1985, 12, 25)
+        birth_date: new Date(1985, 12, 25),
+        password: 'something'
       });
       newEmployee.display_name = `${newEmployee.first_name} ${newEmployee.last_name.substring(0,1)}`;
       chai.request(server)

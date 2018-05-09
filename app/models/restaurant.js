@@ -31,7 +31,9 @@ var RestaurantSchema = mongoose.Schema({
     saturday: { start_time: Number, end_time: Number, open: { type:Boolean, default:false} },
     sunday: { start_time: Number, end_time: Number, open: { type:Boolean, default:false} }
   },
-  dining_areas: [{name:String,tables:[]}]
+  dining_areas: [
+    {name: String}
+  ]
 });
 
 const Restaurant = module.exports = mongoose.model('Restaurant', RestaurantSchema);

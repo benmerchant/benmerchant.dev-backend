@@ -244,5 +244,30 @@ describe('Restaurant', () => {
               });
         });
     });
+    it('it should UPDATE restaurant: add new dining area', (done) => {
+        const newRestaurant = new Restaurant({
+          store_number: 1,
+          name: 'Ben\'s Fine Steakery',
+          state_tax: (6/100), // go ahead and convert to percentages here for testing purposes
+          local_tax: (1/100)
+        });
+        newRestaurant.save((err, restaurant) => {
+          chai.request(server)
+              .put(`/api/restaurant/add/diningarea/${restaurant.id}`)
+              .send({
+                new_dining_area: 'Patio'
+              })
+              .end((err, res) => {
+                expect(res).to.have.status(200);
+                expect(res.body).to.have.property('msg').eql('Successfully added dining area');
+                expect(res.body).to.have.property('restaurant').which.is.an('object');
+                expect(res.body.restaurant).to.have.property('dining_areas').which.is.an('array');
+                expect(res.body.restaurant.dining_areas.length).to.be.eql(1);
+                expect(res.body.restaurant.dining_areas[0]).to.be.an('object').and.have.property('name').eql('Patio');
+                expect(res.body.restaurant.dining_areas[0]).to.have.property('_id');
+              done();
+              });
+        });
+    });
   });
 });

@@ -71,3 +71,16 @@ exports.updateRestaurant = (req, res, next) => {
     }
   );
 };
+
+exports.addDiningArea = (req,res,next) => {
+
+  Restaurant.findByIdAndUpdate(
+    req.params.restaurantID,
+    {$push: {dining_areas: {name: req.body.new_dining_area}}},
+    {new: true, safe: true},
+    (err, restaurant) => {
+      if(err) res.status(422).json({errors: err});
+      else res.status(200).json({msg: 'Successfully added dining area', restaurant: restaurant});
+    }
+  );
+};
