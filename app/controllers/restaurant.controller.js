@@ -5,7 +5,7 @@ const Restaurant = require('../models/restaurant');
 // this will only ever return one document
 // can't think of a better way to store this info
 exports.getRestaurant = (req,res,next) => {
-  Restaurant.find({id:req.params.id}).exec((err, restaurant) => {
+  Restaurant.findById(req.params.id).exec((err, restaurant) => {
     if(err) res.status(500).json({error: err});
     else return res.status(200).json({msg: 'Successfully retrieved restaurant', restaurant: restaurant});
   });

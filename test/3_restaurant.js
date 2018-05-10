@@ -32,8 +32,8 @@ describe('Restaurant', () => {
             .end((err, res) => {
               expect(res).to.have.status(200);
               expect(res.body).to.have.property('msg').eql('Successfully retrieved restaurant');
-              expect(res.body).to.have.property('restaurant').which.is.an('array');
-              expect(res.body.restaurant.length).to.be.eql(0);
+              expect(res.body).to.have.property('restaurant').which.is.an('object');
+              expect(res.body.restaurant).to.have.property('name').eql(newRestaurant.name);
             done();
             });
       });
