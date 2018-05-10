@@ -2,7 +2,6 @@
 const Restaurant = require('../models/restaurant');
 
 // GET restaurant
-// this will only ever return one document
 // can't think of a better way to store this info
 exports.getRestaurant = (req,res,next) => {
   Restaurant.findById(req.params.id).exec((err, restaurant) => {

@@ -3,6 +3,7 @@ const express = require('express');
 const EmployeeController = require('./controllers/employee.controller');
 const RoleController = require('./controllers/role.controller');
 const RestaurantController = require('./controllers/restaurant.controller');
+const TableController = require('./controllers/table.controller');
 
 module.exports = function(app){
   // route groups
@@ -11,12 +12,14 @@ module.exports = function(app){
   const roleRoutes = express.Router();
   const restaurantRoutes = express.Router();
   const loginRoutes = express.Router();
+  const tableRoutes = express.Router();
 
   // employee routes middleware for apiRoutes
   apiRoutes.use('/employees', employeeRoutes);
   apiRoutes.use('/roles', roleRoutes);
   apiRoutes.use('/restaurant', restaurantRoutes);
   apiRoutes.use('/login', loginRoutes);
+  apiRoutes.use('/tables', tableRoutes);
 
   /// Employee Routes /////////////////////
   // get all employees
@@ -59,6 +62,14 @@ module.exports = function(app){
   restaurantRoutes.put('/:id', RestaurantController.updateRestaurant);
   // add dining dining_areas
   restaurantRoutes.put('/add/diningarea/:restaurantID', RestaurantController.addDiningArea);
+
+  /// Table Routes //////////////////////
+  // Get all tables
+  tableRoutes.get('/', TableController.getTables);
+  // Post a new table
+  tableRoutes.post('/', TableController.createNewTable);
+
+
 
   // url for all API routes
   app.use('/api', apiRoutes);

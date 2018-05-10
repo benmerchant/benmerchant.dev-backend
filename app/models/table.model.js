@@ -5,7 +5,8 @@ const ObjectId = Schema.Types.ObjectId;
 
 var TableSchema = mongoose.Schema({
   dining_area: {type: ObjectId, required: true},
-  name: {type: String, required: true}
+  name: {type: String, required: true},
+  seats: {type: Number, required: true}
 });
 
 const Table = module.exports = mongoose.model('Table', TableSchema);
