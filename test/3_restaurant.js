@@ -19,16 +19,25 @@ describe('Restaurant', () => {
     });
   });
   describe('/GET the restaurant', () => {
-    it('it should GET restaurant document', (done) => {
-      chai.request(server)
-          .get('/api/restaurant')
-          .end((err, res) => {
-            expect(res).to.have.status(200);
-            expect(res.body).to.have.property('msg').eql('Successfully retrieved restaurant');
-            expect(res.body).to.have.property('restaurant').which.is.an('array');
-            expect(res.body.restaurant.length).to.be.eql(0);
-          done();
-          });
+    it('it should GET the restaurant document', (done) => {
+      const newRestaurant = new Restaurant({
+        store_number: 1,
+        name: 'Ben\'s Fine Steakery',
+        state_tax: 6,
+        local_tax: 1
+      });
+      newRestaurant.save((err,restaurant) => {
+        chai.request(server)
+            .get(`/api/restaurant/${restaurant._id}`)
+            .end((err, res) => {
+              expect(res).to.have.status(200);
+              expect(res.body).to.have.property('msg').eql('Successfully retrieved restaurant');
+              expect(res.body).to.have.property('restaurant').which.is.an('array');
+              expect(res.body.restaurant.length).to.be.eql(0);
+            done();
+            });
+      });
+
     });
   });
   describe('/POST create restaurant', () => {

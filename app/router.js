@@ -52,7 +52,7 @@ module.exports = function(app){
 
   /// Restaurant Routes /////////////////////
   // GET restaurant document
-  restaurantRoutes.get('/', RestaurantController.getRestaurant);
+  restaurantRoutes.get('/:id', RestaurantController.getRestaurant);
   // create new restaurant
   restaurantRoutes.post('/', RestaurantController.createRestaurant);
   // update restaurant hours
