@@ -178,3 +178,28 @@ All files                   |    88.32 |    65.96 |    94.03 |    96.07 |       
 ```
 
 I'm not sure. But that means we are good to go.
+
+# Start your server!
+```$ nodemon
+[nodemon] 1.11.0
+[nodemon] to restart at any time, enter `rs`
+[nodemon] watching: *.*
+[nodemon] starting `node server.js`
+(node:6264) DeprecationWarning: current URL string parser is deprecated, and will be removed in a future version. To use the new parser, pass option { useNewUrlParser: true } to MongoClient.connect.
+Server listening on port 3005
+Mongoose connected to mongodb://localhost/startpos
+(node:6264) DeprecationWarning: collection.ensureIndex is deprecated. Use createIndexes instead.
+```
+Let's fix these Deprecation Warnings.
+I'm not using MongoClient. Mongoose is. So Let's try to upgrade that.
+- I have the latest version installed. Not sure about those warnings.
+
+Nothing happened as a result of updating Mongoose.
+```$ npm list mongodb-core
+BenMerchant.dev-backend@0.3.0 Y:\bmdev-back
+`-- mongoose@5.4.19
+  +-- mongodb@3.1.13
+  | `-- mongodb-core@3.1.11  deduped
+  `-- mongodb-core@3.1.11
+  ```
+No idea how to get ride of warnings. 

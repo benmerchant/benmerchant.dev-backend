@@ -10,26 +10,26 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/benmerchant/benmerchant.dev.git"
-    },
-    "keywords": [
-      "portfolio",
-      "job",
-      "seeker",
-      "hire-me",
-      "nodejs"
-    ],
-    "author": "Ben Merchant <benjaminmerchant@gmail.com>",
-    "contributors": [
-      {
-        "name": "Ben Merchant",
-        "web": "https://github.com/benmerchant"
-      }
-    ],
-    "license": "ISC",
-    "bugs": {
-      "url": "https://github.com/benmerchant/benmerchant.dev/issues"
-    },
-    "homepage": "https://github.com/benmerchant/benmerchant.dev#readme",
+  },
+  "keywords": [
+    "portfolio",
+    "job",
+    "seeker",
+    "hire-me",
+    "nodejs"
+  ],
+  "author": "Ben Merchant <benjaminmerchant@gmail.com>",
+  "contributors": [
+    {
+      "name": "Ben Merchant",
+      "web": "https://github.com/benmerchant"
+    }
+  ],
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/benmerchant/benmerchant.dev/issues"
+  },
+  "homepage": "https://github.com/benmerchant/benmerchant.dev#readme",
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.18.2",
