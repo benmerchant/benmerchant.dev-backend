@@ -17,12 +17,60 @@
       1. the networking concerns (WWW)
       1. allows testing the API in-process(using supertest), without performing network calls
   1. ✔ 1.5 Use environment aware, secure and hierarchical config
-    1. (a) keys can be read from file AND from environment variable 
+    1. (a) keys can be read from file AND from environment variable
     1. (b) secrets are kept outside committed code
     1. (c) config is hierarchical for easier findability. There are a few packages that can help tick most of those boxes like rc, nconf and config
 
 
+- Installing express-generator really quickly to get a handle on this `./bin/www` business.
 
+`SyntaxError: Unexpected identifier`
+
+- Installing babel-register babel-preset-env since Node cant handle ES6 yet
+
+More vulnerabilities:
+```$ npm install -s-dev babel-register babel-preset-env
++ babel-preset-env@1.7.0
++ babel-register@6.26.0
+added 89 packages from 18 contributors and audited 5037 packages in 13.162s
+found 2 moderate severity vulnerabilities
+  run `npm audit fix` to fix them, or `npm audit` for details
+
+$ npm audit
+=== npm audit security report ===
+# Run  npm update js-yaml --depth 2  to resolve 2 vulnerabilities
+
+$ npm audit fix
+updated 2 packages in 3.46s
+fixed 2 of 2 vulnerabilities in 5037 scanned packages
+
+```
+https://github.com/developit/express-es6-rest-api/search?q=babel&unscoped_q=babel
+https://gist.github.com/sam-artuso/d39dc04650f9455e34549841a8270c82 // presets is dead
+https://www.codementor.io/iykyvic/writing-your-nodejs-apps-using-es6-6dh0edw2o
+https://babeljs.io/docs/en/babel-node
+https://babeljs.io/docs/en/babel-preset-env
+
+https://hackernoon.com/using-babel-7-with-node-7e401bc28b04
+```$ npm install --save-dev @babel/core @babel/cli @babel/preset-env @babel/node
+npm notice save @babel/core is being moved from dependencies to devDependencies
++ @babel/core@7.4.0
++ @babel/cli@7.2.3
++ @babel/node@7.2.2
++ @babel/preset-env@7.4.2
+added 109 packages from 61 contributors, updated 1 package and audited 8574 packages in 16.23s
+found 0 vulnerabilities
+
+
+$ npm uninstall babel-preset-env babel-register
+removed 81 packages and audited 6598 packages in 3.986s
+found 0 vulnerabilities
+```
+
+```$ touch .babelrc
+$ vi .babelrc
+$ mkdir dist
+```
 
 ------------------------------------------------------------------------------
 
