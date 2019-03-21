@@ -1,5 +1,5 @@
 {
-  "name": "BenMerchant.dev - backend",
+  "name": "BenMerchant.dev-backend",
   "version": "0.3.0",
   "description": "Node.js Express RESTful API for my portfolio site",
   "main": "server.js",

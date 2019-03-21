@@ -163,3 +163,18 @@ Let's ignore the `.travis.yml` and `.coveralls.yml` for now. Well, coveralls is 
 
 #### One more thing before a break and a switching of gears.
 There is a /coverage folder with beautifully illustrated breakdowns of the code coverage in HTML. It didn't generate any just now. I wonder why. Either way. Since they'll be in older commits, I'm going to delete them. It will be in previous commits, I'm going to delete it from the repo before this new commit. Should you gitignore them or go ahead and post them. Might confuse some people. I sure was last year.
+
+
+Now I'm confused. After that bit of housekeeping, I ran `npm test` again.
+
+## All Tests passed!
+``` 47 passing (6s)
+
+----------------------------|----------|----------|----------|----------|-------------------|
+File                        |  % Stmts | % Branch |  % Funcs |  % Lines | Uncovered Line #s |
+----------------------------|----------|----------|----------|----------|-------------------|
+All files                   |    88.32 |    65.96 |    94.03 |    96.07 |                   |
+----------------------------|----------|----------|----------|----------|-------------------|
+```
+
+I'm not sure. But that means we are good to go.
