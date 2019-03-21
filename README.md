@@ -2,6 +2,30 @@
 
 ### [Front End Here](https://github.com/benmerchant/benmerchant.dev)
 
+## Update [16:40 on 2019-03-21] - via Yoni Goldberg
+[1. Project Structure Practices](https://github.com/i0natan/nodebestpractices#1-project-structure-practices)
+  1. ✔ 1.1 Structure your solution by components
+    1. Structure your solution by self-contained components
+  1. ✔ 1.2 Layer your components, keep Express within its boundaries
+    1. Business Logic/DAL doesn't need to meet express
+    1. create and pass a custom context object
+  1. ✔ 1.3 Wrap common utilities as npm packages
+    1. Private modules require paid account, worth it in the future
+  1. ✔ 1.4 Separate Express 'app' and 'server'
+    1. at least two files:
+      1. the API declaration (app.js)
+      1. the networking concerns (WWW)
+      1. allows testing the API in-process(using supertest), without performing network calls
+  1. ✔ 1.5 Use environment aware, secure and hierarchical config
+    1. (a) keys can be read from file AND from environment variable 
+    1. (b) secrets are kept outside committed code
+    1. (c) config is hierarchical for easier findability. There are a few packages that can help tick most of those boxes like rc, nconf and config
+
+
+
+
+------------------------------------------------------------------------------
+
 Trying to make something out of this mess. Every commit before this one was my first true attempt to make something with knowledge only of `JavaScript`, not `MEAN`. Also, going to try to track my progress. I heard that you don't need to timestamp everything since that is inherent in `git`. I'll do my best.
 
 * Didn't even have a `.gitignore`. As a result, I pushed `/node_modules` last year. Let's remedy that.
@@ -209,3 +233,36 @@ Node.js & JavaScript Testing Best Practices (2019) by @i0natan
 
 Mainly, the controllers and models need rearranged by feature or type, like the tests, not the way they are, by type of file or module.
 Very similar to what people were saying about AngularJS. It's strange that EVERY SINGLE tutorial does it the "less good" way.
+
+1. He mentions testing immediately
+  1. test needs 3 parts
+  1. BDD-style
+  1. Lint w/ test linters
+  1. black box
+  1. mocks >>> stubs/spies
+  1. use realistic fake data
+  1. property based Testing
+  1. stay within the test
+  1. avoid globals
+  1. expect errors, not catch
+  1. tag tests
+
+... Just realized all fifty points here are on testing.
+
+Here's [another article.](https://medium.com/@me_37286/19-ways-to-become-a-better-node-js-developer-in-2019-ffd3a8fbfe38)
+
+1. more types/schemas (Typescript)
+1. enrich linters
+  1. eslint-plugin-chai-expect  - can discover tests without assertions
+  1. eslint-plugin-promise      - can discover promises with no resolve (your code will never continue)
+  1. eslint-plugin-security     - can discover eager regex expressions that might get used for DOS attacks
+
+Finally found what i wanted:
+[1. Project Structure Practices](https://github.com/i0natan/nodebestpractices#1-project-structure-practices)
+  1. ✔ 1.1 Structure your solution by components
+  1. ✔ 1.2 Layer your components, keep Express within its boundaries
+  1. ✔ 1.3 Wrap common utilities as npm packages
+  1. ✔ 1.4 Separate Express 'app' and 'server'
+  1. ✔ 1.5 Use environment aware, secure and hierarchical config
+
+Going to start over at the top.
