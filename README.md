@@ -202,4 +202,10 @@ BenMerchant.dev-backend@0.3.0 Y:\bmdev-back
   | `-- mongodb-core@3.1.11  deduped
   `-- mongodb-core@3.1.11
   ```
-No idea how to get ride of warnings. 
+No idea how to get rid of warnings.
+------------------------------------------------------------------------------
+[Found this article a couple weeks ago.](https://medium.com/@me_37286/yoni-goldberg-javascript-nodejs-testing-best-practices-2b98924c9347)
+Node.js & JavaScript Testing Best Practices (2019) by @i0natan
+
+Mainly, the controllers and models need rearranged by feature or type, like the tests, not the way they are, by type of file or module.
+Very similar to what people were saying about AngularJS. It's strange that EVERY SINGLE tutorial does it the "less good" way.
