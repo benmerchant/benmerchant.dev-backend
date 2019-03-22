@@ -2,3 +2,5 @@
 .travis.yml
 /notes
 .nyc_output
+/dist
+.env
