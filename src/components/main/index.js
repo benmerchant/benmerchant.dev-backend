@@ -5,10 +5,11 @@
  *
  * Author: Ben Merchant
 */
-
+import path from 'path';
+import fs from 'fs';
 'use strict';
 import express from 'express';
-
+import cors from 'cors';
 // try the old way for modules
 // This is a functions that accepts the express app object
 // so that we can mount ONE Middleware on it
@@ -26,27 +27,21 @@ module.exports = function(app) {
     res.status(200).json({message: 'Welcome to the site!'});
   });
 
+
+
   // main/home
   const homeRouter = express.Router();
   apiRoutes.use('/home', homeRouter);
   homeRouter.get('/', (req, res, next) => {
+    console.log(req.body);
+    console.log(req.query);
+    console.log(req.params);
+
     // send an array of phrases for the toggler
-    const phrases = [
-      'Howdy!',
-      'Great day to be alive!',
-      'I <3 JavaScript!',
-      'No MongoDB FontAwesome logo...',
-      'Paid an artist for the logo',
-      'Need to write some tests',
-      'Half of life is learning who you are.',
-      'Last season of Game of Thrones...',
-      'I am very over SQL',
-      'Refactoring is more fun than starting from scratch',
-      'Google > Apple > Amazon. But iPhone over everything',
-      'These are not from a database... yet.',
-      'I refuse to go back to not liking who I was'
-    ];
-    res.status(200).json({phrases:phrases});
+    fs.readFile(path.resolve(__dirname,'phrases.json'),'utf8', (err,phrases) => {
+      if(err) res.status(400).json({error:err});
+      else res.status(200).json({phrases:phrases});
+    });
   });
 
   // main/projects
