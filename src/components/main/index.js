@@ -5,19 +5,11 @@
  *
  * Author: Ben Merchant
 */
-
+import path from 'path';
+import fs from 'fs';
 'use strict';
 import express from 'express';
-
-
-// export const mainComponent = function() {
-//   const mainComponent = express.Router();
-//
-//   mainComponent.get('/', (req, res, next) => {
-//     res.send(200).json({message: 'Welcome to the site!'});
-//   });
-// };
-
+import cors from 'cors';
 // try the old way for modules
 // This is a functions that accepts the express app object
 // so that we can mount ONE Middleware on it
@@ -28,10 +20,50 @@ module.exports = function(app) {
 
   const mainRouter = express.Router();
   apiRoutes.use('/main', mainRouter);
+// main these routes are for the ENTIRE app
+  // <html> basically. the entire viewport
+  // everything else willl be just for a view or partial
   mainRouter.get('/', (req, res, next) => {
     res.status(200).json({message: 'Welcome to the site!'});
   });
 
+
+
+  // main/home
+  const homeRouter = express.Router();
+  apiRoutes.use('/home', homeRouter);
+  homeRouter.get('/', (req, res, next) => {
+    console.log(req.body);
+    console.log(req.query);
+    console.log(req.params);
+
+    // send an array of phrases for the toggler
+    fs.readFile(path.resolve(__dirname,'phrases.json'),'utf8', (err,phrases) => {
+      if(err) res.status(400).json({error:err});
+      else res.status(200).json({phrases:phrases});
+    });
+  });
+
+  // main/projects
+  const projectsRouter = express.Router();
+  apiRoutes.use('/projects', projectsRouter);
+  projectsRouter.get('/', (req, res, next) => {
+    res.status(200).json({message: 'Welcome to the site!'});
+  });
+
+  // main/about
+  const aboutRouter = express.Router();
+  apiRoutes.use('/about', aboutRouter);
+  aboutRouter.get('/', (req, res, next) => {
+    res.status(200).json({message: 'Welcome to the site!'});
+  });
+
+  // main/blog
+  const blogRouter = express.Router();
+  apiRoutes.use('/blog', blogRouter);
+  blogRouter.get('/', (req, res, next) => {
+    res.status(200).json({message: 'Welcome to the site!'});
+  });
 
   app.use('/api', apiRoutes);
 };
