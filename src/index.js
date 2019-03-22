@@ -7,6 +7,7 @@
 */
 import {app} from './app';
 import http from 'http';
+import mongoose from 'mongoose';
 require('dotenv').config();
 
 // get port and DAL info from config
@@ -17,13 +18,13 @@ import {config} from './app/config';
 // get port # from ENV
 // IF .env exists, that will be the same name as the property
 // in the config object
-const configString = whatEnv(process.env.NODE_ENV);
+const THE_ENVIRONMENT = whatEnv(process.env.NODE_ENV);
 
 function whatEnv(nodeEnv) {
   return (nodeEnv ? nodeEnv : undefined);
 };
 
-const configurations = config[configString];
+const configurations = config[THE_ENVIRONMENT];
 
 // TODO: combine function and string
 // TODO: handle undefined NODE_ENV
@@ -42,7 +43,11 @@ const server = http.createServer(app);
 server.listen(app.get('port'),(err) => {
   if(err) throw err;
   else {
-    console.log(`Server now listening on port ${app.get('port')}`);
-    console.log(`NOT CONNECTED but will use database ${app.get('db')}`);
+    console.log(`Server now listening on port ${app.get('port')}...`);
+    mongoose.connect(app.get('db'),{useNewUrlParser: true},(err) => {
+      if(err) throw err;
+      else console.log(`Connected to the database: ${app.get('db')}...`);
+    });
+
   };
 });

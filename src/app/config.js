@@ -2,10 +2,10 @@
 export const config = {
   'production': {
     port: 3000,
-    db: 'benjaminsfuture'
+    db: 'bmdevprod'
   },
   'test': {
-    test_port: 4000,
+    port: 4000,
     db: 'bendevdottest'
   },
   'development': {
