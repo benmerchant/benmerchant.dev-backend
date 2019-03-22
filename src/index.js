@@ -26,7 +26,7 @@ function whatEnv(nodeEnv) {
 const configurations = config[configString];
 
 // TODO: combine function and string
-// TODO: handle undefined
+// TODO: handle undefined NODE_ENV
 
 
 

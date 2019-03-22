@@ -1,7 +1,7 @@
 // use a class here and build this!
 export const config = {
   'production': {
-    port: process.env.PORT || 3000,
+    port: 3000,
     db: 'benjaminsfuture'
   },
   'test': {
