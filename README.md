@@ -2,6 +2,13 @@
 
 ### [Front End Here](https://github.com/benmerchant/benmerchant.dev)
 
+
+## Update [11:05 on 2019-03-21]
+I'm about to go to sleep. I've worked pretty hard this week. The past few days especially. I just can't unpack how Mr. Goldberg is passing his app and router objects around. Plus in my old project I was using router as a function. Kind of confusing. One good thing though, I learned a lot about both Express and Node itself.
+
+Can't go to bed until I have at least one API route fully working and its parent app deployed. 
+
+--------------------------------------------------------------------------
 ## Update [16:40 on 2019-03-21] - via Yoni Goldberg
 [1. Project Structure Practices](https://github.com/i0natan/nodebestpractices#1-project-structure-practices)
   1. ✔ 1.1 Structure your solution by components

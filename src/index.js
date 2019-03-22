@@ -8,11 +8,15 @@
 import {app} from './app';
 import http from 'http';
 import mongoose from 'mongoose';
+// he did say somewhere to do logging elsewhere
+// my thought is, you need the config and .env to control it
+// the logs are going to be related to requests. hmmm
+import morgan from 'morgan';
 require('dotenv').config();
 
 // get port and DAL info from config
 // Express doesn't need DB stuff.
-import {config} from './app/config';
+import {config} from './config';
 
 
 // get port # from ENV
@@ -48,6 +52,8 @@ server.listen(app.get('port'),(err) => {
       if(err) throw err;
       else console.log(`Connected to the database: ${app.get('db')}...`);
     });
-
   };
 });
+
+// only use logger if not in test mode. ruins the tests
+THE_ENVIRONMENT!=="test" ? app.use(morgan('combined')) : console.log('No logging during testing');
