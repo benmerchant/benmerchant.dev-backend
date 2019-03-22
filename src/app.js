@@ -5,6 +5,7 @@
  *
  * Author: Ben Merchant
 */
-import express from 'express';
+const express = require('express');
 
-const app = express();
+
+export const app = express();

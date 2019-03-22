@@ -3,3 +3,4 @@
 /notes
 .nyc_output
 /dist
+.env

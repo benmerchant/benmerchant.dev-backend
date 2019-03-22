@@ -72,6 +72,13 @@ $ vi .babelrc
 $ mkdir dist
 ```
 
+Finally got Babel Working. Now transcribing my code so it can be transpiled.
+- @i0natan had me thinking `.normalizePort()` was a an express or Node function. It looks like it came from [HERE](https://github.com/Azure-Samples/app-service-web-nodejs-get-started/blob/master/bin/www). But what Do I know.
+
+Also, `bin/www` not working at the moment. Probably because it doesn't have a file type for `Babel` to hook on too.
+
+* added a `.env` to help with my configurations
+* import via command line later. dont want to wreck the scritps
 ------------------------------------------------------------------------------
 
 Trying to make something out of this mess. Every commit before this one was my first true attempt to make something with knowledge only of `JavaScript`, not `MEAN`. Also, going to try to track my progress. I heard that you don't need to timestamp everything since that is inherent in `git`. I'll do my best.

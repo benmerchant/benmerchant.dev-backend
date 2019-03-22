@@ -1,8 +1,15 @@
-const config = {
-  port: process.env.PORT || 3005,
-  db: 'mongodb://localhost/startpos',
-  test_port: 4000,
-  test_db: 'mongodb://localhost/startpos_test'
-}
-
-module.exports = config;
+// use a class here and build this!
+export const config = {
+  'production': {
+    port: process.env.PORT || 3000,
+    db: 'benjaminsfuture'
+  },
+  'test': {
+    test_port: 4000,
+    db: 'bendevdottest'
+  },
+  'development': {
+    port: 3005,
+    db: 'bendevelop'
+  }
+};
