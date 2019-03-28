@@ -1,15 +1,1 @@
-[
-  "Howdy!",
-  "Great day to be alive!",
-  "I <3 JavaScript!",
-  "No MongoDB FontAwesome logo...",
-  "Paid an artist for the logo",
-  "Need to write some tests",
-  "Half of life is learning who you are.",
-  "Last season of Game of Thrones...",
-  "I am very over SQL",
-  "Refactoring is more fun than starting from scratch",
-  "Google > Apple > Amazon. But iPhone over everything",
-  "These are not from a database... yet.",
-  "I refuse to go back to not liking who I was"
-]
+{"phrases": ["Howdy!","Great day to be alive!","I <3 JavaScript!","No MongoDB FontAwesome logo...","Paid an artist for the logo","Need to write some tests","Half of life is learning who you are.","Last season of Game of Thrones...","I am very over SQL","Refactoring is more fun than starting from scratch","Google > Apple > Amazon. But iPhone over everything","These are not from a database... yet.","I refuse to go back to not liking who I was"]}
