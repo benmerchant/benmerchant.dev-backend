@@ -55,8 +55,10 @@ server.listen(app.get('port'),(err) => {
       if(err) throw err;
       else {
         console.log(`Connected to the database: ${app.get('db')}...`);
-        if(THE_ENVIRONMENT==="development") {
-            console.log(`populating DEV DB`);
+        if(THE_ENVIRONMENT!=="test") {
+            // this will run regardless for a while.
+            // Except tests. of which we have ZERO
+            console.log(`populating DEV/Build DB`);
             popuationOfDevelopmentDataBase();
         }
       }

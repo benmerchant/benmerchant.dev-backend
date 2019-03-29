@@ -1,8 +1,5 @@
 // just need some data in the database
-const mongoose = require('mongoose');
-
-const Schema = mongoose.Schema;
-const ObjectId = Schema.Types.ObjectId;
+import HomeModel from './components/main/home.model';
 
 
 export const popuationOfDevelopmentDataBase = function() {
@@ -22,16 +19,9 @@ export const popuationOfDevelopmentDataBase = function() {
       "I refuse to go back to not liking who I was"
     ];
 
-    const PhraseSchema = mongoose.Schema({
-      human_sentence: {
-        type: String,
-        required: true
-      }
-    });
 
-    const PhraseModel = mongoose.model('Phrase',PhraseSchema);
 
-    const phraseCollectionQuery = PhraseModel.find();
+    const phraseCollectionQuery = HomeModel.find();
     phraseCollectionQuery.exec((err,phrasesFromDB) => {
       if(err) throw err;
       if(phrasesFromDB.length===0){
@@ -43,7 +33,7 @@ export const popuationOfDevelopmentDataBase = function() {
 
     const phraseFunction = () => {
       phrases.forEach((singlePhrase) => {
-        let newSinglePhrase = new PhraseModel({human_sentence:singlePhrase});
+        let newSinglePhrase = new HomeModel({human_sentence:singlePhrase});
         newSinglePhrase.save((err,phraseBackFromDB) => {
           if(err) throw err;
           else console.log(`phrase ${phrases.indexOf(singlePhrase)} of ${phrases.length}`);
