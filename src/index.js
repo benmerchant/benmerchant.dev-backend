@@ -14,6 +14,9 @@ import mongoose from 'mongoose';
 import morgan from 'morgan';
 require('dotenv').config();
 
+// only for development
+import {popuationOfDevelopmentDataBase} from './populateDevDB';
+
 // get port and DAL info from config
 // Express doesn't need DB stuff.
 import {config} from './config';
@@ -50,7 +53,13 @@ server.listen(app.get('port'),(err) => {
     console.log(`Server now listening on port ${app.get('port')}...`);
     mongoose.connect(app.get('db'),{useNewUrlParser: true},(err) => {
       if(err) throw err;
-      else console.log(`Connected to the database: ${app.get('db')}...`);
+      else {
+        console.log(`Connected to the database: ${app.get('db')}...`);
+        if(THE_ENVIRONMENT==="development") {
+            console.log(`populating DEV DB`);
+            popuationOfDevelopmentDataBase();
+        }
+      }
     });
   };
 });
