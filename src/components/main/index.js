@@ -6,10 +6,17 @@
  * Author: Ben Merchant
 */
 import path from 'path';
-import fs from 'fs';
+// import fs from 'fs';
 'use strict';
 import express from 'express';
 import cors from 'cors';
+
+// get models
+import HomeModel from './home.model';
+
+
+
+
 // try the old way for modules
 // This is a functions that accepts the express app object
 // so that we can mount ONE Middleware on it
@@ -37,11 +44,19 @@ module.exports = function(app) {
     console.log(req.query);
     console.log(req.params);
 
-    // send an array of phrases for the toggler
-    fs.readFile(path.resolve(__dirname,'phrases.json'),'utf8', (err,phrases) => {
-      if(err) res.status(400).json({error:err});
-      else res.status(200).json({phrases:phrases});
+    const allPhrasesFromMongo = HomeModel.find();
+    allPhrasesFromMongo.exec((err,phrasesFromMongo) => {
+      if(err) res.status(500).json({
+        message: 'Your efforts were fruitless',
+        error_bub:err
+      });
+      else res.status(200).json({
+        message: 'Your efforts were successful',
+        phrases:phrasesFromMongo
+      });
+
     });
+
   });
 
   // main/projects

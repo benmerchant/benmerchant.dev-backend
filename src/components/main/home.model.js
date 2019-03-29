@@ -1,3 +1,10 @@
 import mongoose from 'mongoose';
 
-import {Schema} from mongoose.Schema
+const HomeSchema = mongoose.Schema({
+  human_sentence: {
+    type: String,
+    required: true
+  }
+});
+
+module.exports = mongoose.model('Home',HomeSchema);
