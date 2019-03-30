@@ -1,6 +1,6 @@
 {
   "name": "BenMerchant.dev-backend",
-  "version": "0.6.1",
+  "version": "0.6.2",
   "description": "Node.js Express RESTful API for my portfolio site",
   "main": "src/index.js",
   "scripts": {
