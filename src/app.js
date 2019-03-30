@@ -18,9 +18,7 @@ import cors from 'cors';
 console.log('Welcome to Jurassic Express JS');
 
 export const app = express();
-const corsOptions = {
-  origin: 'false'
-};
+
 app.use(cors());
 
 app.use(bodyParser.json());
