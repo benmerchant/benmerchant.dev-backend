@@ -21,7 +21,7 @@ export const app = express();
 const corsOptions = {
   origin: 'false'
 };
-app.use(cors())
+app.use(cors());
 
 app.use(bodyParser.json());
 // why didnt I leave a comment in StartPOS to say why I

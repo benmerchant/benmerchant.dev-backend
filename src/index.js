@@ -36,12 +36,21 @@ const configurations = config[THE_ENVIRONMENT];
 // TODO: combine function and string
 // TODO: handle undefined NODE_ENV
 
-
-
 // store that port # in Express object
 app.set('port',configurations.port);
-// store the DB too??? why not
-app.set('db',process.env.DB_ROOT+configurations.db);
+
+
+if(THE_ENVIRONMENT==='production'){
+  app.set('uri',`${process.env.DB_ROOT_PROD}${process.env.DB_USER}:${process.env.DB_PASSWORD}@portfolio-cluster-2019-kihqv.mongodb.net/test?retryWrites=true`);
+  app.set('dbName','production');
+} else {
+  // db if 'development' or 'test'
+  app.set('uri',process.env.DB_ROOT+configurations.db);
+  app.set('dbName','dev or test. who knows');
+}
+
+
+
 
 // create HTTP Server
 const server = http.createServer(app);
@@ -51,12 +60,12 @@ server.listen(app.get('port'),(err) => {
   if(err) throw err;
   else {
     console.log(`Server now listening on port ${app.get('port')}...`);
-    mongoose.connect(app.get('db'),{useNewUrlParser: true},(err) => {
+    mongoose.connect(`${app.get('uri')}`,{useNewUrlParser: true, dbName: configurations.db},(err) => {
       if(err) throw err;
       else {
-        console.log(`Connected to the database: ${app.get('db')}...`);
+        console.log(`Connected to the database: ${app.get('dbName')}...`);
         if(THE_ENVIRONMENT!=="test") {
-            // this will run regardless for a while.
+            // this will run regardless of dev or production for a while.
             // Except tests. of which we have ZERO
             console.log(`populating DEV/Build DB`);
             popuationOfDevelopmentDataBase();
