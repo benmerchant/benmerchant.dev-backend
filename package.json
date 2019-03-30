@@ -6,7 +6,7 @@
   "scripts": {
     "serve": "node dist/index.js",
     "build": "babel src --out-dir dist",
-    "start": "nodemon --exec babel-node src/index",
+    "develop": "nodemon --exec babel-node src/index",
     "test": "nyc mocha --timeout 9999 --exit",
     "coverage": "nyc report --reporter=text-lcov | coveralls"
   },

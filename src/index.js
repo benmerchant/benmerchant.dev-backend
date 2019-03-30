@@ -42,14 +42,15 @@ app.set('port',configurations.port);
 
 if(THE_ENVIRONMENT==='production'){
   app.set('uri',`${process.env.DB_ROOT_PROD}${process.env.DB_USER}:${process.env.DB_PASSWORD}@portfolio-cluster-2019-kihqv.mongodb.net/test?retryWrites=true`);
-  app.set('dbName','production');
+
 } else {
   // db if 'development' or 'test'
-  app.set('uri',process.env.DB_ROOT+configurations.db);
-  app.set('dbName','dev or test. who knows');
+  app.set('uri',process.env.DB_ROOT_LOCAL);
+
 }
 
-
+// regardless of THE_ENVIRONMENT
+app.set('dbName',`${configurations.db}`);
 
 
 // create HTTP Server
@@ -60,7 +61,7 @@ server.listen(app.get('port'),(err) => {
   if(err) throw err;
   else {
     console.log(`Server now listening on port ${app.get('port')}...`);
-    mongoose.connect(`${app.get('uri')}`,{useNewUrlParser: true, dbName: configurations.db},(err) => {
+    mongoose.connect(`${app.get('uri')}`,{useNewUrlParser: true, dbName: app.get('dbName')},(err) => {
       if(err) throw err;
       else {
         console.log(`Connected to the database: ${app.get('dbName')}...`);
