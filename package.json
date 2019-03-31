@@ -1,11 +1,11 @@
 {
   "name": "BenMerchant.dev-backend",
-  "version": "0.6.2",
+  "version": "0.6.3",
   "description": "Node.js Express RESTful API for my portfolio site",
   "main": "src/index.js",
   "scripts": {
     "serve": "node dist/index.js",
-    "build": "babel src --out-dir dist",
+    "build": "babel src --out-dir ../___AWS/bmdev-api",
     "develop": "nodemon --exec babel-node src/index",
     "test": "nyc mocha --timeout 9999 --exit",
     "coverage": "nyc report --reporter=text-lcov | coveralls"
