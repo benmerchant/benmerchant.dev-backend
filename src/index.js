@@ -5,18 +5,21 @@
  *
  * Author: Ben Merchant
 */
+require('dotenv').config();
 import http from 'http';
 import mongoose from 'mongoose';
 import morgan from 'morgan';
 import express from 'express';
 import bodyParser from 'body-parser';
 import cookieParser from 'cookie-parser';
-import mainComponent from './components/main/index';
 import cors from 'cors';
 
-const port = 3000;
-const uri = "mongodb+srv://benjAdmin:ScreechAndLisa@portfolio-cluster-2019-kihqv.mongodb.net/test?retryWrites=true";
-const options = {useNewUrlParser: true, dbName: 'bmdevprod'};
+import mainComponent from './components/main/index';
+
+const port = process.env.port;
+
+const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@${process.env.DB_CLUSTER}/test?retryWrites=true`;
+const options = {useNewUrlParser: true, dbName: process.env.DB_NAME};
 
 console.log('Welcome to Jurassic Express JS');
 
@@ -33,7 +36,10 @@ app.get('/',(req,res) => {
 
 app.listen(port,(err) => {
   if(err) throw err;
-  console.log(`Server listening on port ${port}`);
+  console.log(`Server listening on port ${port}...`);
+  mongoose.connect(uri,options,(err) => {
+    if(err) throw err;
+    console.log('Database connected');
+    mainComponent(app);
+  });
 });
-
-mainComponent(app);
