@@ -23,11 +23,11 @@ const port = process.env.PORT;
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@${process.env.DB_CLUSTER}/${process.env.DB_NAME}?retryWrites=true`;
 const options = {useNewUrlParser: true};
 
-const rightThisSecond = new Date(Date.now()).toLocaleString();
+const rightThisSecond = new Date(Date.now()).toLocaleString().split(',');
 
 
 console.log(`Welcome to Jurassic Express JS!`);
-console.log(`The time is now${rightThisSecond.split(',')[1]} (in Virginia) on ${rightThisSecond.split(',')[0]}`);
+console.log(`The time is now${rightThisSecond[1]} UTC on ${rightThisSecond[0]}`);
 
 
 const app = express();
@@ -43,6 +43,7 @@ app.get('/',(req,res) => {
 app.get('/api',(req,res) => {
   res.status(200).json({message: 'Welcome to the API! No one should ever see this. Try the api: ~/api/home'});
 });
+// app.get('/favicon.ico', (req, res) => res.status(204));
 
 
 app.listen(port,(err) => {
@@ -50,12 +51,13 @@ app.listen(port,(err) => {
   console.log(`Server listening on port ${port}...`);
   mongoose.connect(uri,options)
     .then(() => {
-      console.log('Database connected...');
+      console.log(`Connected to database: ${process.env.DB_NAME}...`);
       MainComponent(app);
       console.log(`No. of Mongoose Connections: ${mongoose.connections.length}`);
     })
     .catch((err) => {
       console.log(`failure because: ${err}`);
+      console.trace('Printing stack trace:');
     })
   ;
 });
