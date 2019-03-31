@@ -20,8 +20,8 @@ import {MainComponent} from './components/main/index';
 
 const port = process.env.PORT;
 
-const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@${process.env.DB_CLUSTER}/test?retryWrites=true`;
-const options = {useNewUrlParser: true, dbName: process.env.DB_NAME};
+const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@${process.env.DB_CLUSTER}/${process.env.DB_NAME}?retryWrites=true`;
+const options = {useNewUrlParser: true};
 
 const rightThisSecond = new Date(Date.now()).toLocaleString();
 
@@ -45,9 +45,17 @@ app.get('/api',(req,res) => {
 });
 
 
-
 app.listen(port,(err) => {
   if(err) throw err;
   console.log(`Server listening on port ${port}...`);
-  MainComponent(app);
+  mongoose.connect(uri,options)
+    .then(() => {
+      console.log('Database connected...');
+      MainComponent(app);
+      console.log(`No. of Mongoose Connections: ${mongoose.connections.length}`);
+    })
+    .catch((err) => {
+      console.log(`failure because: ${err}`);
+    })
+  ;
 });

@@ -29,13 +29,16 @@ export const MainComponent = function(app) {
     console.log(req.body);
     console.log(req.query);
     console.log(req.params);
-    res.status(200).json({
-      message: 'You have success: ~/api/home',
-      phrases: [
-        'these are static phrases',
-        'not from Mongo',
-        'have to step back'
-      ]
+    const allPhrasesFromMongo = HomeModel.find();
+    allPhrasesFromMongo.exec((err,phrasesFromMongo) => {
+      if(err) res.status(500).json({
+        message: 'Your efforts were fruitless',
+        error_bub:err
+      });
+      else res.status(200).json({
+        message: 'Your efforts were successful',
+        phrases: phrasesFromMongo
+      });
     });
 
   });
