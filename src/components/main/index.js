@@ -9,7 +9,6 @@ import path from 'path';
 // import fs from 'fs';
 'use strict';
 import express from 'express';
-import cors from 'cors';
 
 // get models
 import HomeModel from './home.model';
@@ -24,12 +23,6 @@ module.exports = function(app) {
 
   const mainRouter = express.Router();
   apiRoutes.use('/main', mainRouter);
-  // main these routes are for the ENTIRE app
-  // <html> basically. the entire viewport
-  // everything else willl be just for a view or partial
-  mainRouter.get('/', (req, res, next) => {
-    res.status(200).json({message: 'Welcome to the site!'});
-  });
 
   // api/home
   const homeRouter = express.Router();
