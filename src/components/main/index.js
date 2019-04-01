@@ -42,6 +42,14 @@ export const MainComponent = function(app) {
     });
 
   });
+  homeRouter.get('/words',(req, res, next) => {
+    res.status(200).json({
+      message: 'You got some static words hardcoded in the web server',
+      words: [
+        'applesauce','aspen','alligator'
+      ]
+    });
+  });
 
   app.use('/api', apiRoutes);
 };

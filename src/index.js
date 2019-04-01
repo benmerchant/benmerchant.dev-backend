@@ -43,21 +43,19 @@ app.get('/',(req,res) => {
 app.get('/api',(req,res) => {
   res.status(200).json({message: 'Welcome to the API! No one should ever see this. Try the api: ~/api/home'});
 });
-// app.get('/favicon.ico', (req, res) => res.status(204));
+app.get('/favicon.ico', (req, res) => res.status(204));
 
+// back to the unhandled promise issue
+const db = mongoose.connect(uri,options);
 
-app.listen(port,(err) => {
-  if(err) throw err;
-  console.log(`Server listening on port ${port}...`);
-  mongoose.connect(uri,options)
-    .then(() => {
-      console.log(`Connected to database: ${process.env.DB_NAME}...`);
-      MainComponent(app);
-      console.log(`No. of Mongoose Connections: ${mongoose.connections.length}`);
-    })
-    .catch((err) => {
-      console.log(`failure because: ${err}`);
-      console.trace('Printing stack trace:');
-    })
-  ;
+mongoose.connection.on('connected',() => {
+  console.log(`Mongoose conncted to MongoDB database: ${process.env.DB_NAME}`);
+  app.listen(port,(err) => {
+    if(err) throw err;
+    console.log(`Server listening on port ${port}...`);
+  });
+});
+mongoose.connection.on('error',(err) => {
+  console.log('Database connection failure because:');
+  console.log(err);
 });
